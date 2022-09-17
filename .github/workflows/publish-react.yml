@@ -21,8 +21,8 @@ jobs:
         run: yarn install --immutable --immutable-cache
       - name: Build package
         run: yarn build-react
-      - name: Run tests
-        run: yarn test-react
+      # - name: Run tests
+      #   run: yarn test-react
       - name: Publish package
         uses: JS-DevTools/npm-publish@v1
         with:

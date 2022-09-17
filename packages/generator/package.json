@@ -1,0 +1,42 @@
+{
+  "name": "@jikji/generator",
+  "version": "0.1.0",
+  "main": "lib/cjs/index.js",
+  "module": "lib/es/index.js",
+  "unpkg": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "types": "lib/index.d.ts",
+  "repository": "https://github.com/PejmanNik/jikji",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "puppeteer-core": "^17.1.3"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.28.5",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/babel__preset-env": "^7",
+    "@types/jest": "^28.1.3",
+    "@types/node": "^18.0.0",
+    "@types/serve-handler": "^6.1.1",
+    "jest": "^28.1.1",
+    "puppeteer-core": "^17.1.3",
+    "rollup": "^2.10.0",
+    "rollup-plugin-api-extractor": "0.2.5",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "^28.0.5",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "serve-handler": "^6.1.3"
+  }
+}

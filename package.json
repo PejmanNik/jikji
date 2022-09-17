@@ -1,0 +1,32 @@
+{
+    "version": "0.1.0",
+    "name": "jikji",
+    "workspaces": [
+        "packages/*",
+        "example",
+        "docs"
+    ],
+    "scripts": {
+        "debug": "yarn workspace debug start",
+        "generator": "yarn workspace @jikji/generator start",
+        "docs": "yarn workspace @jikji/website start --port 3001",
+        "build": "yarn build-react && yarn build-generator",
+        "build-react": "yarn workspace @jikji/react build",
+        "test-react": "yarn workspace @jikji/react test",
+        "build-docs": "yarn workspace @jikji/website build",
+        "test-generator": "yarn workspace @jikji/generator test",
+        "build-generator": "yarn workspace @jikji/generator build",
+        "example": "yarn workspace example start",
+        "example-ssg": "yarn workspace example start-ssg"
+    },
+    "packageManager": "yarn@3.2.3",
+    "dependencies": {
+        "eslint": "^8.16.0",
+        "prettier": "^2.6.2",
+        "typescript": "^4.7.4"
+    },
+    "devDependencies": {
+        "@types/eslint": "^8",
+        "@types/prettier": "^2"
+    }
+}

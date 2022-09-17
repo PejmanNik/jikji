@@ -1,0 +1,58 @@
+.banner {
+  --ifm-hero-background-color: rgb(255 227 167);
+  --ifm-hero-text-color: rgb(0, 0, 0);
+  --ifm-hero-banner-text-color: #4f5057;
+}
+
+html[data-theme="dark"] .banner {
+  --ifm-hero-background-color: rgb(238 176 43 / 24%);
+  --ifm-hero-banner-text-color: #f3f3f3;
+}
+
+@media screen and (max-width: 966px) {
+  .banner {
+    padding: 2rem;
+  }
+}
+
+.banner {
+  padding: 3.1rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: var(--ifm-hero-banner-text-color);
+}
+
+.banner::before {
+  background-image: url(/img/paper_1.jpg);
+  background-size: 554px;
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.25;
+}
+
+.banner > .container {
+  position: relative;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 5.5rem;
+  font-weight: normal;
+  font-family: "Macondo", cursive;
+}
+
+.subtitle {
+  font-size: 1.4rem;
+  font-weight: 300;
+}

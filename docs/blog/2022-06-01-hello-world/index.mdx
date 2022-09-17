@@ -1,0 +1,30 @@
+---
+slug: hello-world
+title: Hello World
+authors: [pejman]
+---
+
+import LayoutConvertSvg from "@site/static/img/layout_convert.svg";
+
+I'm kinda obsessed with reports and PDFs tools :) It started with a simple need. Creating PDF reports for my project, There were a few libraries for building PDFs, but most of them didn't support non-English or right to left language. Also, it was tough to work and design reports with them.
+
+I finally decided to continue with HTML to PDF solutions as it lets me design my report freely, and there was no localization problem. Again most of the libs don't support Header/Footer or pagination. The tools that support these features were built over QtWebKit and didn't support new HTML/CSS specifications.
+
+In the end, none of them satisfied my needs, So I developed a tool that can convert HTML to PDF by separating the header and footer from content and creating two HTML files. Converting both HTML to PDF (by puppeteer) and eventually merging each page of two files together.
+
+This hacky solution resolved my problems and other developers (According to the NPM, it has 900 weekly downloads at the time I'm writing this blog).
+
+**Github**: [puppeteer-report](https://github.com/PejmanNik/puppeteer-report/)
+![puppeteer-report](https://raw.githubusercontent.com/PejmanNik/puppeteer-report/master/.attachment/image1.png)
+
+[puppeteer-report](https://github.com/PejmanNik/puppeteer-report/) provides a simple solution for having a custom header, footer, and page numbers. Still, I got a bunch of requests on GitHub for new features and had to reject most of them because [puppeteer](https://pptr.dev/) has a lot of limitations in the customization of layout and printing.
+
+![github-issues](./github-issues.png)
+
+**"NOT POSSIBLE"** Was not a satisfactory answer for me, so I started a new project to fix all of the limitations and provide more features. The idea came to me when I was working on a doc in Google Docs. When the cursor jumped to a new page, I asked myself how they handled the pagination? It has a sample answer. They break lines and elements by JS before the browser decides to how split/wrap the lines and elements to layout the pages.
+
+So I started to develop a JS engine that handles the pagination before the browser print preview engine gets the elements. It lets me edit and customize every engine's behavior over any component.
+
+<LayoutConvertSvg />
+
+The result was this library. It uses [React Fiber](https://github.com/acdlite/react-fiber-architecture) to get the component hierarchy and reorganized, split, and layout the components before rendering and making a print-ready web view that can easily be printed or converted to PDF or images.

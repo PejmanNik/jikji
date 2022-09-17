@@ -1,0 +1,40 @@
+:root {
+  --jikji-page-background-color: #ffffff;
+  --jikji-page-margin-bottom: 10px;
+  --jikji-page-box-shadow: rgb(142 138 138) -1px 3px 5px 2px;
+  --jikji-section-margin-bottom: 10px;
+  --jikji-view-background-color: rgb(218 220 224);
+  --jikji-view-padding: 30px 10px;
+  /* Internal - debug overflows */
+  --jikji-overflow-warning-color: rgb(216 56 197 / 30%);
+}
+
+body {
+  margin: 0;
+}
+
+@media screen {
+  .jikji.view {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--jikji-view-background-color);
+    padding: var(--jikji-view-padding);
+  }
+
+  .jikji.page {
+    box-shadow: var(--jikji-page-box-shadow);
+    margin-bottom: var(--jikji-page-margin-bottom);
+    background-color: var(--jikji-page-background-color);
+  }
+
+  .jikji.section {
+    margin-bottom: var(--jikji-section-margin-bottom);
+  }
+
+  /* Internal - debug overflows */
+  .jikji.overflow-warning {
+    background-color: var(--jikji-overflow-warning-color);
+  }
+}

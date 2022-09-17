@@ -1,0 +1,7 @@
+.separation {
+  background-image: url(/img/line.svg);
+  width: 100%;
+  height: 23px;
+  margin-top: -14px;
+  position: relative;
+}

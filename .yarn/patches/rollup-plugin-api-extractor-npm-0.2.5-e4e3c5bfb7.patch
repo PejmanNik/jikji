@@ -1,0 +1,115 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 50daa79ed3581062b0a4675e0e482d90b937fa98..5fcec5541269b401b89aad37d1947da4798fce6f 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,40 +1,41 @@
+-import { PluginImpl } from 'rollup';
+-import { IConfigFile } from '@microsoft/api-extractor';
++import { PluginImpl } from "rollup";
++import { IConfigFile } from "@microsoft/api-extractor";
+ /**
+  * Configuration options for the RollupJs ApiExtractor plugin
+  * @public
+  */
+ export interface ApiExtractorPluginOptions {
+-    /**
+-     * The path to the api extractor configuration file. defaults to ./config/api-extractor.json
+-     */
+-    configFile?: string;
+-    /**
+-     * Configuration overrides for the the api extractor configuration.
+-     * if no config file is specified and the default file does not exist all mandatory configuration sections need to be supplied here.
+-     */
+-    configuration?: Partial<IConfigFile>;
+-    /**
+-     * Indicates that API Extractor is running as part of a local build, e.g. on a developer's machine
+-     */
+-    local?: boolean;
+-    /**
+-     * Show additional api-extractor messages in the output
+-     */
+-    verbose?: boolean;
+-    /**
+-     * Show diagnostic messages used for troubleshooting problems with API Extractor.
+-     */
+-    diagnostics?: boolean;
+-    /**
+-     * Override the typescript version that api-extractor uses.
+-     * @see [api-extractor documentation for more information])(https://api-extractor.com/pages/commands/api-extractor_run/)
+-     */
+-    typescriptFolder?: string;
+-    /**
+-     * when true deletes the left over .d.ts files following the rollup. defaults to true.
+-     */
+-    cleanUpRollup?: boolean;
++  /**
++   * The path to the api extractor configuration file. defaults to ./config/api-extractor.json
++   */
++  configFile?: string;
++  /**
++   * Configuration overrides for the the api extractor configuration.
++   * if no config file is specified and the default file does not exist all mandatory configuration sections need to be supplied here.
++   */
++  configuration?: Partial<IConfigFile>;
++  /**
++   * Indicates that API Extractor is running as part of a local build, e.g. on a developer's machine
++   */
++  local?: boolean;
++  /**
++   * Show additional api-extractor messages in the output
++   */
++  verbose?: boolean;
++  /**
++   * Show diagnostic messages used for troubleshooting problems with API Extractor.
++   */
++  diagnostics?: boolean;
++  /**
++   * Override the typescript version that api-extractor uses.
++   * @see [api-extractor documentation for more information])(https://api-extractor.com/pages/commands/api-extractor_run/)
++   */
++  typescriptFolder?: string;
++  /**
++   * when true deletes the left over .d.ts files following the rollup. defaults to true.
++   */
++  cleanUpRollup?: boolean;
++  cleanUpRollupDir?: string;
+ }
+ /**
+  * adds \@microsoft/api-extractor to you rollupjs pipeline.
+diff --git a/dist/index.js b/dist/index.js
+index 748e8b2a1ec861ae2fa8d567fc59294114263e34..6410907f070896d3f34b0c3c5f239e20c9aed1a0 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -6,7 +6,7 @@ var apiExtractor$1 = require('@microsoft/api-extractor');
+ var fs = require('fs');
+ var path = require('path');
+ 
+-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
++function _interopDefaultLegacy(e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+ 
+ var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
+ var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
+@@ -121,12 +121,12 @@ const removeEmptyFolders = (folder) => {
+     }
+ };
+ 
+-const performDtsRollupCleanup = (bundle, extractorConfig, options) => {
++const performDtsRollupCleanup = (bundle, extractorConfig, cleanUpRollupDir) => {
+     var _a;
+     if (!bundle || !extractorConfig.rollupEnabled) {
+         return;
+     }
+-    const outDir = fileSys.resolve((_a = options.dir) !== null && _a !== void 0 ? _a : './');
++    const outDir = fileSys.resolve((_a = cleanUpRollupDir) !== null && _a !== void 0 ? _a : './');
+     const outDefs = [];
+     pushIfDefined(extractorConfig.untrimmedFilePath, outDir, outDefs);
+     pushIfDefined(extractorConfig.betaTrimmedFilePath, outDir, outDefs);
+@@ -171,7 +171,7 @@ const apiExtractor = (pluginOptions = {}) => {
+                 return;
+             }
+             if ((_a = pluginOptions.cleanUpRollup) !== null && _a !== void 0 ? _a : true) {
+-                performDtsRollupCleanup(bundle, extractorConfig, options);
++                performDtsRollupCleanup(bundle, extractorConfig, pluginOptions.cleanUpRollupDir);
+             }
+         }
+     };

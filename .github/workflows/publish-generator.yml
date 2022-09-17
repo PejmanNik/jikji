@@ -28,3 +28,4 @@ jobs:
         with:
           package: "packages/generator/package.json"
           token: ${{ secrets.NPM_TOKEN }}
+          access: "public"

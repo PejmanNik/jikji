@@ -1,5 +1,4 @@
 import http from "http";
-import path from "path";
 import { AddressInfo } from "node:net";
 import handler from "serve-handler";
 

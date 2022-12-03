@@ -1,6 +1,6 @@
 {
   "name": "@jikji/react",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "main": "lib/cjs/index.js",
   "module": "lib/es/index.js",
   "unpkg": "lib/index.js",

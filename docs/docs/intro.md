@@ -16,6 +16,8 @@ npm install @jikji/react
 
 Create your awesome report by adding the [ReportRoot](components/report/report-root) and then [Section](components/section) component. Check the component list for a detail list of available components.
 
+[Live example](https://codesandbox.io/s/jikji-example-14useg)
+
 ```ts
 import {
   PageContent,

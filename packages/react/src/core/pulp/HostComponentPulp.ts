@@ -1,35 +1,56 @@
 import idGenerator from 'core/idGenerator';
-import {createElement, ReactElement, ReactNode} from 'react';
-import type {Fiber} from 'react-reconciler';
-import {ComponentPulp} from './ComponentPulp';
-import {createAlternateRendered} from './componentShared';
+import { createElement, ReactElement, ReactNode } from 'react';
+import type { Fiber } from 'react-reconciler';
+import { ComponentPulp } from './ComponentPulp';
+import { createAlternateRendered } from './componentShared';
 import {
   buildMarginsInfo,
   getMarginTopWithSiblingCollapse,
 } from './marginHelper';
-import {Pulp, PulpType, SplitPulp} from './pulpTypes';
-import {buildVirtualOffset} from './virtualOffset';
+import { ExplicitPartial, merge, mergeProps } from './pulpHelpers';
+import { Pulp, PulpType, SplitPulp } from './pulpTypes';
+import { buildVirtualOffset } from './virtualOffset';
 
-export interface HostComponentProps {
+export interface HostComponentPulpProps {
   [key: string]: unknown;
   key: string | null;
   style: Record<string, unknown> | null;
   ref: Fiber['ref'];
   children: ReactNode;
 }
+
+export interface Offset {
+  split: number;
+  element: number;
+}
+
 export interface DomBoxInfo {
   height: number;
+  offset: Offset;
   y: number;
   marginTop: number;
   marginBottom: number;
   marginTopWithCollapse: number;
 }
-export interface VirtualOffset {
-  split: number;
-  element: number;
+
+export class OffsetInfo {
+  readonly virtual: Offset
+  readonly constant: Offset
+
+  readonly split: number;
+  readonly element: number;
+
+  constructor(constant: Offset, virtual: Offset) {
+    this.constant = constant;
+    this.virtual = virtual;
+
+    this.split = constant.split + virtual.split;
+    this.element = constant.element + virtual.element;
+  }
 }
+
 export interface ElementHeightInfo {
-  virtualOffset: VirtualOffset;
+  offset: OffsetInfo;
   marginTop: number;
   marginBottom: number;
   fullHeight: number;
@@ -41,7 +62,7 @@ export class HostComponentPulp {
   readonly type: PulpType.HostComponent;
   readonly elementType: string;
   readonly domNode: Element;
-  readonly props: HostComponentProps;
+  readonly props: HostComponentPulpProps;
   readonly rendered: Pulp[] | null;
   readonly nodeY: number;
   readonly component: ReactElement;
@@ -49,14 +70,14 @@ export class HostComponentPulp {
   readonly domBoxInfo: DomBoxInfo;
   readonly hasChildrenWithForceVisit: boolean;
 
-  private constructor(
+  public constructor(
     id: string,
     elementType: string,
-    props: HostComponentProps,
+    props: HostComponentPulpProps,
     domNode: Element,
     domBoxInfo: DomBoxInfo,
     rendered: Pulp[] | null,
-    version: number,
+    version: number
   ) {
     this.id = id;
     this.type = PulpType.HostComponent;
@@ -77,7 +98,7 @@ export class HostComponentPulp {
     rendered: Pulp[] | null,
   ): HostComponentPulp {
     const elementType = fiber.elementType;
-    const props = {...fiber.memoizedProps, key, ref: fiber.ref};
+    const props = { ...fiber.memoizedProps, key, ref: fiber.ref };
     const domNode = fiber.stateNode as Element;
 
     const clientRect = domNode.getBoundingClientRect();
@@ -87,6 +108,10 @@ export class HostComponentPulp {
 
     const domBoxInfo: DomBoxInfo = {
       height: clientRect.height,
+      offset: {
+        element: 0,
+        split: 0,
+      },
       y: clientRect.y,
       marginBottom,
       marginTop,
@@ -104,22 +129,39 @@ export class HostComponentPulp {
     );
   }
 
-  private createComponent(
-    props: HostComponentProps,
+  public clone(newProps: ExplicitPartial<{
+    props: HostComponentPulpProps,
+    domBoxInfo: DomBoxInfo,
+    rendered: Pulp[] | null,
+    version: number,
+  }>) {
+    return new HostComponentPulp(
+      this.id,
+      this.elementType,
+      mergeProps(newProps.rendered, this.props, newProps.props),
+      this.domNode,
+      newProps.domBoxInfo ?? this.domBoxInfo,
+      merge(this.rendered, newProps.rendered),
+      newProps.version ?? this.version,
+    );
+  }
+
+  protected createComponent(
+    props: HostComponentPulpProps,
     children?: ReactNode,
   ): ReactElement {
-    const validProps = {...props, 'data-id': this.id};
+    const validProps = { ...props, 'data-id': this.id };
     delete validProps.children;
 
     return createElement(this.elementType, validProps, children);
   }
 
-  getHeightInfo(parent: HostComponentPulp | ComponentPulp): ElementHeightInfo {
+  public getHeightInfo(parent: HostComponentPulp | ComponentPulp): ElementHeightInfo {
     const marginsInfo = buildMarginsInfo(this, parent);
     const virtualOffset = buildVirtualOffset(this, marginsInfo);
 
     return {
-      virtualOffset,
+      offset: new OffsetInfo(this.domBoxInfo.offset, virtualOffset),
       marginBottom: marginsInfo.marginBottomWithCollapse,
       marginTop: marginsInfo.marginTopWithCollapse,
       fullHeight: marginsInfo.marginBottomWithCollapse + this.domBoxInfo.height,
@@ -141,29 +183,20 @@ export class HostComponentPulp {
     return false;
   }
 
-  private update(
+  protected update(
     nodeY: number,
     rendered: Array<Pulp>,
   ): HostComponentPulp | null {
     if (rendered.length == 0) {
       return null;
     }
-    const domBoxInfo = {...this.domBoxInfo};
-    const heightOffset = nodeY - this.nodeY;
+    const domBoxInfo = { ...this.domBoxInfo };
+    const newHeight = nodeY - this.nodeY;
 
     domBoxInfo.y = nodeY;
-    domBoxInfo.height -= heightOffset;
+    domBoxInfo.height -= newHeight;
 
-    const props = {...this.props, children: rendered.map(x => x.component)};
-    return new HostComponentPulp(
-      this.id,
-      this.elementType,
-      props,
-      this.domNode,
-      domBoxInfo,
-      rendered,
-      this.version + 1,
-    );
+    return this.clone({ domBoxInfo, rendered, version: this.version + 1 });
   }
 
   split(
@@ -178,12 +211,12 @@ export class HostComponentPulp {
     );
     const pulp = this.update(nodeY, alternateRendered);
 
-    return {pulp, component};
+    return { pulp, component };
   }
 
   updateMargins(parent: HostComponentPulp | ComponentPulp): Pulp {
     const marginTopWithCollapse = getMarginTopWithSiblingCollapse(parent, this);
-    const domBoxInfo = {...this.domBoxInfo, marginTopWithCollapse};
+    const domBoxInfo = { ...this.domBoxInfo, marginTopWithCollapse };
 
     return new HostComponentPulp(
       this.id,

@@ -1,10 +1,11 @@
+import { createElement, ElementType, ReactElement, ReactNode } from 'react';
 import {
   ComponentPulp,
   ComponentPulpProps,
   ComponentPulpState,
 } from 'core/pulp/ComponentPulp';
-import {Pulp, SplitPulp} from 'core/pulp/pulpTypes';
-import React, {ElementType, ReactElement} from 'react';
+import { ExplicitPartial, merge, mergeProps } from 'core/pulp/pulpHelpers';
+import { Pulp } from 'core/pulp/pulpTypes';
 
 export interface LayoutOptions {
   disableSnapshot: boolean;
@@ -13,34 +14,36 @@ export interface LayoutOptions {
 
 export class LayoutComponentPulp extends ComponentPulp {
   readonly layoutOptions: LayoutOptions;
+  readonly component: ReactElement;
 
   public constructor(
     elementType: ElementType,
     props: ComponentPulpProps,
     rendered: Pulp[] | null,
-    component: ReactElement | undefined,
-    state: ComponentPulpState | undefined,
+    component: ReactElement | null,
+    state: ComponentPulpState | null,
     options: LayoutOptions,
   ) {
     super(elementType, props, rendered, component, state);
     this.layoutOptions = options;
+    this.component = this.createComponent(props, props.children);
   }
 
-  protected clone(
+  public clone(newProps: ExplicitPartial<{
     elementType: ElementType,
     props: ComponentPulpProps,
     rendered: Pulp[] | null,
-    component?: ReactElement,
-    state?: ComponentPulpState,
+    component: ReactElement,
+    state: ComponentPulpState
+  }>
   ) {
     return new LayoutComponentPulp(
-      elementType,
-      props,
-      rendered,
-      component,
-      state,
-      this.layoutOptions,
-    );
+      newProps.elementType ?? this.elementType,
+      mergeProps(newProps.rendered, this.props, newProps.props),
+      merge(this.rendered, newProps.rendered),
+      merge(this.component, newProps.component),
+      merge(this.state, newProps.state),
+      this.layoutOptions);
   }
 
   static FromPulp(pulp: ComponentPulp, options: LayoutOptions) {
@@ -48,25 +51,35 @@ export class LayoutComponentPulp extends ComponentPulp {
       pulp.rendered,
       options,
     );
+
     const props = {
       ...pulp.props,
       children: rendered?.map(x => x.component),
     };
 
-    const component = LayoutComponentPulp.createComponentByOptions(
-      pulp.elementType,
-      props,
-      options,
-    );
-
     return new LayoutComponentPulp(
       pulp.elementType,
       props,
       rendered,
-      component,
+      null,
       pulp.state,
       options,
     );
+  }
+
+  protected createComponent(
+    props: ComponentPulpProps,
+    children?: ReactNode,
+  ): ReactElement {
+
+    // why layoutOptions?. : it can be null when this method 
+    // has been called from super class
+    if (this.layoutOptions?.disableSnapshot) {
+      const key = props.key;
+      return createElement(this.elementType, { key }, children);
+    }
+
+    return super.createComponent(props, children);
   }
 
   static createRenderedByOptions(
@@ -85,26 +98,8 @@ export class LayoutComponentPulp extends ComponentPulp {
     return rendered;
   }
 
-  static createComponentByOptions(
-    elementType: ElementType,
-    props: ComponentPulpProps,
-    options: LayoutOptions,
-  ) {
-    if (options.disableSnapshot) {
-      return ComponentPulp.createComponent(elementType, props, props.children);
-    }
-
-    return ComponentPulp.createComponent(React.Fragment, props, props.children);
-  }
-
   canBeSplitted() {
     return !this.layoutOptions.disableWrap;
   }
 
-  split(
-    splittedRendered: Array<Pulp | null>,
-    resultComponents: (ReactElement | string | number)[],
-  ): SplitPulp<ReactElement | string | number> {
-    return super.split(splittedRendered, resultComponents);
-  }
 }

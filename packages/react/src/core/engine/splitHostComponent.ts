@@ -16,7 +16,7 @@ export function splitHostComponent(
   let lastTextNodeY = splitNodeInfo.lastTextNodeY;
   let pageOffset = splitNodeInfo.pageOffset;
 
-  const {fullHeight, marginBottom, marginTop, virtualOffset} =
+  const {fullHeight, marginBottom, marginTop, offset} =
     pulp.getHeightInfo(splitNodeInfo.rootPulp);
 
   const nodeEndY = pulp.nodeY + fullHeight;
@@ -34,7 +34,7 @@ export function splitHostComponent(
       lastTextNodeY = lastChild.linesInfo.at(-1)?.endY ?? 0;
     }
 
-    pageOffset += virtualOffset.element;
+    pageOffset += offset.element;
 
     // prettier-ignore
     log.debug('use entire HostComponentPulp', {id: pulp.id, splitNodeInfo, pulp, fullHeight, lastNodeY, pageOffset, marginTop, marginBottom}, [LogFlag.SplitElement]);
@@ -44,10 +44,10 @@ export function splitHostComponent(
     // does component return any new component that we can split &&
     // is there any space left at all on the page
     if (pulp.rendered && splitNodeInfo.pageEndY - lastNodeY - pageOffset > 0) {
-      const splitPageOffset = pageOffset + virtualOffset.split;
+      const splitPageOffset = pageOffset + offset.split;
 
       // prettier-ignore
-      log.debug('split HostComponentPulp - before', {id: pulp.id, level: splitNodeInfo.level, hasChildrenWithForceVisit: pulp.hasChildrenWithForceVisit, pulp, lastNodeY, lastTextNodeY, marginTop, marginBottom, virtualOffset, pageOffset, splitPageOffset, component}, [LogFlag.SplitElement]);
+      log.debug('split HostComponentPulp - before', {id: pulp.id, level: splitNodeInfo.level, hasChildrenWithForceVisit: pulp.hasChildrenWithForceVisit, pulp, lastNodeY, lastTextNodeY, marginTop, marginBottom, offset, pageOffset, splitPageOffset, component}, [LogFlag.SplitElement]);
 
       const splitResult = splitComponentByRendered(
         {...splitNodeInfo, pageOffset: splitPageOffset},
@@ -62,7 +62,7 @@ export function splitHostComponent(
       isCompleted = splitResult.isCompleted;
 
       // prettier-ignore
-      log.debug('split HostComponentPulp - after',{id: pulp.id, level: splitNodeInfo.level, hasChildrenWithForceVisit: pulp.hasChildrenWithForceVisit, pulp: resultPulp, lastNodeY, lastTextNodeY, marginTop, marginBottom, virtualOffset, pageOffset, component}, [LogFlag.SplitElement]);
+      log.debug('split HostComponentPulp - after',{id: pulp.id, level: splitNodeInfo.level, hasChildrenWithForceVisit: pulp.hasChildrenWithForceVisit, pulp: resultPulp, lastNodeY, lastTextNodeY, marginTop, marginBottom, offset, pageOffset, component}, [LogFlag.SplitElement]);
     } else {
       if (!pulp.rendered && nodeEndY > splitNodeInfo.pageEndY) {
         // prettier-ignore

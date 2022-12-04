@@ -8,7 +8,7 @@ A plugin can customize the layout engine; each plugin can only affect one type o
 
 :::info
 
-This is a very advanced and core topic for this library, and there is a slight chance that you are going to need it. The document is very shallow and straightforward, so you need to check the source code. Some interior features of the library use plugin to work. For instance, you can check `Layout` or `PageBreak` component.
+This is a very advanced and core topic for this library, and there is a slight chance that you are going to need it. The document is very shallow and straightforward, so you need to check the source code. Some interior features of the library use plugin to work. For instance, you can check `Layout`, `PageBreak` or `Table` component.
 
 :::
 

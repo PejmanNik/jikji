@@ -1,9 +1,9 @@
 import useLayoutSuspension from 'components/useLayoutSuspension';
-import {ReactEventHandler, useCallback} from 'react';
+import {ComponentProps, ReactEventHandler, useCallback} from 'react';
 
 type EventHandler = ReactEventHandler<HTMLImageElement>;
 
-function Image({onLoad, ...props}: React.ComponentProps<'img'>) {
+function Image({onLoad, ...props}: ComponentProps<'img'>) {
   const {release} = useLayoutSuspension(`IMG_${props.src}`);
 
   const handleLoad = useCallback<EventHandler>(

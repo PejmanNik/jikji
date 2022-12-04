@@ -1,4 +1,4 @@
-import {HostComponentPulp, VirtualOffset} from './HostComponentPulp';
+import {HostComponentPulp, Offset} from './HostComponentPulp';
 import {MarginInfo} from './marginHelper';
 
 /*
@@ -74,7 +74,7 @@ import {MarginInfo} from './marginHelper';
 export function buildVirtualOffset(
   pulp: HostComponentPulp,
   margins: MarginInfo,
-): VirtualOffset {
+): Offset {
   let split = pulp.domBoxInfo.marginBottom;
   if (pulp.version > 1) {
     split += pulp.domBoxInfo.marginTop;

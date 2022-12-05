@@ -1,6 +1,6 @@
 {
   "name": "@jikji/react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "lib/cjs/index.js",
   "module": "lib/es/index.js",
   "unpkg": "lib/index.js",
@@ -57,7 +57,7 @@
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
-    "tslib": "^2.4.0",
-    "typescript": "^4.8.3"
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.3"
   }
 }

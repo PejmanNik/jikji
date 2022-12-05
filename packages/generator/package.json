@@ -1,6 +1,6 @@
 {
   "name": "@jikji/generator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "lib/cjs/index.js",
   "module": "lib/es/index.js",
   "unpkg": "lib/index.js",
@@ -33,8 +33,8 @@
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^28.0.5",
-    "tslib": "^2.4.0",
-    "typescript": "^4.8.3"
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.3"
   },
   "dependencies": {
     "serve-handler": "^6.1.3"

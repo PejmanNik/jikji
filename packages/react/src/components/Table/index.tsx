@@ -1,11 +1,12 @@
-import {ReactNode} from 'react';
+import { ComponentProps, ReactNode} from 'react';
 
 export interface TableProps {
   children: ReactNode;
 }
 
-function Table({children}: TableProps) {
-  return <>{children}</>;
+function Table({children, ...props}: ComponentProps<'table'>) {
+  return <table {...props}>{children}</table>;
 }
+
 
 export default Table;

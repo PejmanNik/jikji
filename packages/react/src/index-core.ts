@@ -12,6 +12,7 @@ export type {
   Offset,
   OffsetInfo
 } from './core/pulp/HostComponentPulp';
+export type { ExplicitPartial } from "./core/pulp/pulpHelpers";
 
 export type { ExplicitPartial } from './core/pulp/pulpHelpers';
 

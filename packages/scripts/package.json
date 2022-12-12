@@ -1,0 +1,12 @@
+{
+  "name": "@jikji/scripts",
+  "version": "0.2.3",
+  "repository": "https://github.com/PejmanNik/jikji",
+  "license": "MIT",
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.33.7",
+    "child-process-promise": "^2.2.1",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
+  }
+}

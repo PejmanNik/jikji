@@ -4,7 +4,7 @@ import http, { Server } from "http";
 jest.mock("http");
 jest.mock("serve-handler");
 
-const mockedHttp = jest.mocked(http, true);
+const mockedHttp = jest.mocked(http, { shallow: true });
 const mockedListen = jest.fn();
 
 mockedHttp.createServer.mockImplementation(

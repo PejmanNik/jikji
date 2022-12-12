@@ -13,6 +13,8 @@ export type {
   OffsetInfo
 } from './core/pulp/HostComponentPulp';
 
+export type { ExplicitPartial } from './core/pulp/pulpHelpers';
+
 export { HostTextPulp } from './core/pulp/HostTextPulp';
 
 export { ComponentPulp } from './core/pulp/ComponentPulp';

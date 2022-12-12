@@ -10,7 +10,7 @@ const mockedPage = {
   pdf: jest.fn(),
 } as unknown as Page;
 
-const mockedPrintPage = jest.mocked(printPage, true);
+const mockedPrintPage = jest.mocked(printPage, { shallow: true });
 mockedPrintPage.mockImplementationOnce(async (b, url, json, printFuncs) => {
   await printFuncs[0](mockedPage);
 });
@@ -18,7 +18,7 @@ mockedPrintPage.mockImplementationOnce(async (b, url, json, printFuncs) => {
 
 const mockedCloseServer = jest.fn();
 const mockedGetHost = jest.fn().mockReturnValue("http://localhost:3000");
-const mockedStartServer = jest.mocked(serve, true).startServer;
+const mockedStartServer = jest.mocked(serve, { shallow: true }).startServer;
 
 mockedStartServer.mockReturnValue({
   close: mockedCloseServer,

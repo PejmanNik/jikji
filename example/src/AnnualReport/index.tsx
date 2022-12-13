@@ -16,7 +16,7 @@ import Business from "./Business";
 import PageBar from "./PageBar";
 import Footer from "./Footer";
 
-function Report1() {
+function AnnualReport() {
   useFontLoadSuspension();
   return (
     <>
@@ -50,4 +50,4 @@ function Report1() {
   );
 }
 
-export default Report1;
+export default AnnualReport;

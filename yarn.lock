@@ -2687,6 +2687,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hyrious/esbuild-plugin-style@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "@hyrious/esbuild-plugin-style@npm:0.3.5"
+  peerDependencies:
+    esbuild: "*"
+  peerDependenciesMeta:
+    esbuild:
+      optional: true
+  checksum: 921e0bb7596c4cf1151e1505c8b7f2aa4650d09dde1d2ae8778c10cef0445be0cb5bef6575b6aaaac5150e93dbd3b455444b6ad19aea8ca6f0607f20b9c173a7
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -3210,6 +3222,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jikji/react@workspace:packages/react"
   dependencies:
+    "@hyrious/esbuild-plugin-style": ^0.3.5
     "@jikji/scripts": "workspace:^"
     "@testing-library/jest-dom": ^5.14.1
     "@testing-library/react": ^13.3.0
@@ -4080,7 +4093,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^5.14.1, @testing-library/jest-dom@npm:^5.16.4":
+"@testing-library/jest-dom@npm:^5.14.1":
   version: 5.16.5
   resolution: "@testing-library/jest-dom@npm:5.16.5"
   dependencies:
@@ -4097,7 +4110,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:^13.2.0, @testing-library/react@npm:^13.3.0":
+"@testing-library/react@npm:^13.3.0":
   version: 13.4.0
   resolution: "@testing-library/react@npm:13.4.0"
   dependencies:
@@ -4111,7 +4124,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/user-event@npm:^14.2.0, @testing-library/user-event@npm:^14.4.3":
+"@testing-library/user-event@npm:^14.2.0":
   version: 14.4.3
   resolution: "@testing-library/user-event@npm:14.4.3"
   peerDependencies:
@@ -4468,7 +4481,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.0.0, @types/node@npm:^18.11.13, @types/node@npm:^18.7.18":
+"@types/node@npm:*, @types/node@npm:^18.0.0, @types/node@npm:^18.11.13":
   version: 18.11.14
   resolution: "@types/node@npm:18.11.14"
   checksum: 1effaf6d55bbcccde9bca763e6454ebf92047726450256ccc0673bf44e4661fbddcd788b0779bad8a13809b05a7bdcbfba81db0713235478b866d553be864be9
@@ -4538,7 +4551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.0.0, @types/react-dom@npm:^18.0.3, @types/react-dom@npm:^18.0.5, @types/react-dom@npm:^18.0.9":
+"@types/react-dom@npm:^18.0.0, @types/react-dom@npm:^18.0.5, @types/react-dom@npm:^18.0.9":
   version: 18.0.9
   resolution: "@types/react-dom@npm:18.0.9"
   dependencies:
@@ -4597,7 +4610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:^18.0.0, @types/react@npm:^18.0.26, @types/react@npm:^18.0.9":
+"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:^18.0.0, @types/react@npm:^18.0.26":
   version: 18.0.26
   resolution: "@types/react@npm:18.0.26"
   dependencies:
@@ -8726,24 +8739,15 @@ __metadata:
   dependencies:
     "@jikji/generator": "*"
     "@jikji/react": "*"
-    "@testing-library/jest-dom": ^5.16.4
-    "@testing-library/react": ^13.2.0
-    "@testing-library/user-event": ^14.4.3
-    "@types/eslint": ^8
-    "@types/jest": ^29.2.4
-    "@types/node": ^18.7.18
-    "@types/react": ^18.0.9
-    "@types/react-dom": ^18.0.3
-    eslint: ^8.29.0
-    eslint-config-react-app: ^7.0.1
+    "@types/react": ^18.0.26
+    "@types/react-dom": ^18.0.9
+    "@vitejs/plugin-react": ^3.0.0
     puppeteer: ^19.4.0
     react: ^18.2.0
-    react-dom: ^18.1.0
-    react-query: ^3.38.0
-    react-scripts: 5.0.1
+    react-dom: ^18.2.0
     recharts: ^2.1.12
-    typescript: ^4.9.4
-    web-vitals: ^3.1.0
+    typescript: ^4.9.3
+    vite: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -14938,7 +14942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:>=16.13.1, react-dom@npm:^18.1.0, react-dom@npm:^18.2.0":
+"react-dom@npm:>=16.13.1, react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -15056,7 +15060,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.38.0, react-query@npm:^3.39.2":
+"react-query@npm:^3.39.2":
   version: 3.39.2
   resolution: "react-query@npm:3.39.2"
   dependencies:
@@ -17372,7 +17376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.9.4":
+"typescript@npm:^4.9.3, typescript@npm:^4.9.4":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"
   bin:
@@ -17392,7 +17396,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
   resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=a1c5e5"
   bin:
@@ -17902,7 +17906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.0.1":
+"vite@npm:^4.0.0, vite@npm:^4.0.1":
   version: 4.0.1
   resolution: "vite@npm:4.0.1"
   dependencies:
@@ -18005,13 +18009,6 @@ __metadata:
   version: 1.1.4
   resolution: "web-namespaces@npm:1.1.4"
   checksum: 5149842ccbfbc56fe4f8758957b3f8c8616a281874a5bb84aa1b305e4436a9bad853d21c629a7b8f174902449e1489c7a6c724fccf60965077c5636bd8aed42b
-  languageName: node
-  linkType: hard
-
-"web-vitals@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "web-vitals@npm:3.1.0"
-  checksum: 867161fd16e22b39720c8da3a5976ab08f414490123d94543b427832354bcdd36c64ff589a2c8de636cbe9593c5121e4a9a804d40b34a6e2b1c4cf275c5ba8e2
   languageName: node
   linkType: hard
 

@@ -1,5 +1,6 @@
 import {build} from 'esbuild';
 import {buildTsc} from '@jikji/scripts/build-tsc.mjs';
+import {style} from '@hyrious/esbuild-plugin-style';
 
 const args = process.argv;
 
@@ -11,14 +12,14 @@ const shared = {
   logLevel: 'info',
   minify: true,
   sourcemap: args.includes('--sm'),
+  plugins: [style({minify: true})],
 };
 
 const esm = build({
   ...shared,
   format: 'esm',
   outfile: './lib/index.esm.js',
-  target: ['es2020', 'node18'],
-  watch: args.includes('--watch'),
+  target: ['es2020', 'node18']
 });
 
 const cjs = build({

@@ -1,6 +1,7 @@
-const puppeteer = require("puppeteer");
-const path = require("path");
-const { ReportBuilder } = require("@jikji/generator");
+import puppeteer from "puppeteer";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { ReportBuilder } from "@jikji/generator";
 
 async function build() {
 
@@ -8,9 +9,11 @@ async function build() {
         args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
     });
 
+    const dirname = path.dirname(fileURLToPath(import.meta.url));
+
     try {
         await ReportBuilder.browser(browser)
-            .serve(path.join(__dirname, "../build"))
+            .serve(path.join(dirname, "../dist"))
             .report("annual-report")
             .pdf({
                 path: './ssg/out.pdf'

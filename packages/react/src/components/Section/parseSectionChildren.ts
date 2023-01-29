@@ -1,4 +1,4 @@
-import {Children, isValidElement, ReactElement, ReactNode} from 'react';
+import { Children, isValidElement, ReactElement, ReactNode } from 'react';
 import PageContent from 'components/PageContent';
 import PageFooter from 'components/PageFooter';
 import PageHeader from 'components/PageHeader';
@@ -6,8 +6,10 @@ import PageOverlay from 'components/PageOverlay';
 import PageStatic from 'components/PageStatic';
 import SectionFooter from 'components/SectionFooter';
 import SectionHeader from 'components/SectionHeader';
+import { isInstanceOfComponent } from 'core/reactTypeHelper';
 
-const validChildren: unknown[] = [
+
+const validChildren = [
   PageContent,
   PageHeader,
   PageFooter,
@@ -35,21 +37,38 @@ export type SectionChildren = {
   sectionElements: SectionElement;
 };
 
+function getComponentName(component: unknown): string {
+  if (typeof component === 'function')
+    return component.name;
+  else if (component && typeof component === 'object' &&
+    'render' in component) {
+    //forward ref component
+    return getComponentName(component.render);
+  }
+
+  return "Unknown"
+}
+
 function parseSectionChildren(children: ReactNode): SectionChildren {
   const pageElements: Partial<PageElement> = {};
   const sectionElements: SectionElement = {};
 
   Children.forEach(children, child => {
-    if (!isValidElement(child) || !validChildren.includes(child.type)) {
+    if (!isValidElement(child))
+      throw Error(`Component "${child}" is not valid React components`);
+
+    const component = validChildren.find(x => isInstanceOfComponent(child.type, x));
+    if (!component) {
       throw Error(
-        `Component "${child}" is not valid as a child for Section, you can use only these components: ${validChildren
+        `Component "${getComponentName(child.type)}" is not valid as a child for Section, 
+        you can use only these components: ${validChildren
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .map((x: any) => x.name ?? x.render?.name)
           .join(',')}`,
       );
     }
 
-    switch (child.type) {
+    switch (component) {
       case SectionHeader:
         sectionElements.header = child;
         break;
@@ -91,3 +110,6 @@ function parseSectionChildren(children: ReactNode): SectionChildren {
 }
 
 export default parseSectionChildren;
+
+
+

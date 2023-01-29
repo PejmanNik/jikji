@@ -1,9 +1,10 @@
 import * as ReactDom from 'react-dom';
-import type {Fiber} from 'react-reconciler';
+import type { Fiber } from 'react-reconciler';
 import PageContent from 'components/PageContent';
-import {ReportPlugin} from 'core/engine/plugin';
-import {fiberToPulpTree} from './fiberToPulpTree';
-import {getChildren} from './treeHelper';
+import { ReportPlugin } from 'core/engine/plugin';
+import { isInstanceOfComponent } from 'core/reactTypeHelper';
+import { fiberToPulpTree } from './fiberToPulpTree';
+import { getChildren } from './treeHelper';
 
 export function makePulpTree(
   element: HTMLDivElement,
@@ -35,7 +36,7 @@ export function makePulpTree(
 
 export function findPageContentFiber(fiber: Fiber[]): Fiber | null {
   for (let i = 0; i < fiber.length; i++) {
-    if (fiber[i].elementType === PageContent) {
+    if (isInstanceOfComponent(fiber[i].elementType, PageContent)) {
       return fiber[i];
     }
 

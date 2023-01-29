@@ -4,6 +4,7 @@ import { rm } from "fs/promises";
 import { Extractor, ExtractorConfig } from "@microsoft/api-extractor";
 import { exec } from "child-process-promise";
 
+
 export const buildTsc = async (url) => {
   const startTime = performance.now();
   await exec("tsc");

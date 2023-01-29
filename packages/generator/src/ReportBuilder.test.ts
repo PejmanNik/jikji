@@ -20,10 +20,10 @@ const mockedCloseServer = jest.fn();
 const mockedGetHost = jest.fn().mockReturnValue("http://localhost:3000");
 const mockedStartServer = jest.mocked(serve, { shallow: true }).startServer;
 
-mockedStartServer.mockReturnValue({
+mockedStartServer.mockReturnValue(Promise.resolve({
   close: mockedCloseServer,
   getHost: mockedGetHost,
-} as unknown as serve.ReportServer);
+} as unknown as serve.ReportServer));
 
 const browser = {} as NewPageFactory;
 

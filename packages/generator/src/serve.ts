@@ -1,12 +1,15 @@
 import http from "http";
 import { AddressInfo } from "node:net";
 import handler from "serve-handler";
+import { readdir } from 'fs/promises'
 
 export interface ReportServer {
   server: http.Server;
   close: () => void;
   getHost: () => string;
 }
+
+
 
 /**
  * Start an HTTP server for react report project,
@@ -15,13 +18,17 @@ export interface ReportServer {
  * @param port - optional port number for HTTP server
  * @returns - the HTTP server and helper functions
  */
-export function startServer(dir: string, port?: number): ReportServer {
+export async function startServer(dir: string, port?: number): Promise<ReportServer> {
+
+  const staticDirectories = (await readdir(dir, { withFileTypes: true }))
+    .filter(x => x.isDirectory())
+    .map(x => ({ "source": x.name, "destination": `/${x.name}` }))
 
   const server = http.createServer(async (req, res) => {
     await handler(req, res, {
       public: dir,
       rewrites: [
-        { "source": "static", "destination": "/static" },
+        ...staticDirectories,
         { "source": "**", "destination": "/index.html" },
       ]
     });

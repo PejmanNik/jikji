@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import { buildTsc } from "@jikji/scripts/build-tsc.mjs";
+import { buildTsc } from "@jikji/shared/build-tsc.mjs";
 
 const args = process.argv;
 

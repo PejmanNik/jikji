@@ -1,4 +1,5 @@
 import { Page, PooledPage } from "page";
+import { jikji_isReady, jikji_readJsonDataFile } from '@jikji/shared/window';
 
 export interface NewPageFactory {
   newPage(): Promise<Page> | Promise<PooledPage>;
@@ -15,14 +16,13 @@ export async function printPage(
 ): Promise<void> {
   const page = await browser.newPage();
 
-  //TODO: read __jikji from react lib
   try {
-    await page.exposeFunction("__jikji_readJsonDataFile", () => {
+    await page.exposeFunction(jikji_readJsonDataFile, () => {
       return jsonData;
     });
 
     page.goto(reportUrl.toString());
-    await page.waitForFunction("window.__jikji_isReady === true");
+    await page.waitForFunction(`window.${jikji_isReady} === true`);
 
     for (const func of printFuncs) {
       await func(page);

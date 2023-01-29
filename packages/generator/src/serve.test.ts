@@ -18,7 +18,7 @@ mockedHttp.createServer.mockImplementation(
 test("start server with custom port", async () => {
   const dir = "./root";
   const port = 3000;
-  const result = startServer(dir, port);
+  const result = await startServer(dir, port);
 
   expect(result.getHost()).toBe("http://localhost:3000");  
   expect(mockedListen).toHaveBeenCalledWith(port);

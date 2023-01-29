@@ -103,7 +103,7 @@ export class ReportBuilder
     try {
 
       if (this.serveDir) {
-        server = startServer(this.serveDir);
+        server = await startServer(this.serveDir);
         hostUrl = server.getHost();
       }
 

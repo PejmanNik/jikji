@@ -1,9 +1,10 @@
 import log from 'core/log';
+import { jikji_readJsonDataFile } from '@jikji/shared/window';
 
 export default async function readJsonDataFile(
   defaultValue?: unknown,
 ): Promise<unknown> {
-  const readFunc = window.__jikji_readJsonDataFile;
+  const readFunc = window[jikji_readJsonDataFile];
 
   if (readFunc) {
     // read file with expose function feature of puppeteer

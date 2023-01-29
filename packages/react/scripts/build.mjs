@@ -1,11 +1,11 @@
 import {build} from 'esbuild';
-import {buildTsc} from '@jikji/scripts/build-tsc.mjs';
+import {buildTsc} from '@jikji/shared/build-tsc.mjs';
 import {style} from '@hyrious/esbuild-plugin-style';
 
 const args = process.argv;
 
 const entryFile = 'src/index.ts';
-const shared = {
+export const shared = {
   bundle: true,
   entryPoints: [entryFile],
   external: ['react', 'react-dom', 'recoil', 'react/jsx-runtime'],
@@ -19,7 +19,7 @@ const esm = build({
   ...shared,
   format: 'esm',
   outfile: './lib/index.esm.js',
-  target: ['es2020', 'node18']
+  target: ['es2020', 'node18'],
 });
 
 const cjs = build({

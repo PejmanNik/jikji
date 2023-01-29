@@ -13,10 +13,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@jikji/react': '/@linked/@jikji/react/index.ts',
-      'components': '/@linked/@jikji/react/components',
-      'core': '/@linked/@jikji/react/core',
-      '/@linked/@jikji/react': path.resolve(require.resolve('@jikji/react/package.json'), "../src")
+      '@jikji/react': path.resolve(require.resolve('@jikji/react/package.json'), "../src"),
+      'components': path.resolve(require.resolve('@jikji/react/package.json'), "../src/components"),
+      'core': path.resolve(require.resolve('@jikji/react/package.json'), "../src/core"),
     }
   }
 })

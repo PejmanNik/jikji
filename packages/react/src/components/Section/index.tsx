@@ -1,9 +1,9 @@
-import {ReactNode, useEffect, useMemo} from 'react';
-import type {PageDimension, PageMargin, PageOrientation} from 'core/pageType';
-import {pageMargin} from 'core/pageConst';
+import { ReactNode, useEffect, useMemo } from 'react';
+import type { PageDimension, PageMargin, PageOrientation } from 'core/pageType';
+import { pageMargin } from 'core/pageConst';
 import adjustDimension from 'core/adjustDimension';
 import useIdGenerator from 'components/useIdGenerator';
-import {SectionContext} from './context';
+import { SectionContext } from './context';
 import SectionLayoutInitializer from './SectionLayoutInitializer';
 
 export interface SectionProps {
@@ -35,21 +35,21 @@ function Section({
   // probably related to: https://bugs.chromium.org/p/chromium/issues/detail?id=1160301
   useEffect(() => {
     const style = document.createElement('style');
+
+    // #${sectionName} {
+    //   page: ${sectionName}
+    // }
+    style.appendChild(document.createTextNode(`   
+    @page { 
+      margin: 0px; 
+      size:${sectionInfo.dimension.width} ${sectionInfo.dimension.height}; 
+      width:${sectionInfo.dimension.width};
+      height:${sectionInfo.dimension.height};
+    }
+    `));
+
     document.head.appendChild(style);
-
-    style.sheet?.insertRule(
-      `#${sectionName} {
-        page: ${sectionName}
-      }`,
-    );
-
-    style.sheet?.insertRule(`
-      @page ${sectionName} { 
-        margin: 0px; 
-        size:${sectionInfo.dimension.width} ${sectionInfo.dimension.height}; 
-        width:${sectionInfo.dimension.width};
-        height:${sectionInfo.dimension.height};
-      }`);
+    return () => { document.head.removeChild(style) };
   }, [sectionInfo, sectionName]);
 
   //in order to restart the init page builder and suspension handler

@@ -1,4 +1,4 @@
-const contents = [
+export const loremContents = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam at sem et est mollis vehicula at sed massa. Ut vitae mi lobortis, euismod nisi non, egestas lorem. Duis eu massa enim. Cras tempor ex metus, quis imperdiet velit consequat ac. Quisque fermentum, urna eu suscipit sodales, nunc odio varius mauris, a ornare metus nulla ut sapien. Nullam vitae libero lectus. Donec porta ultrices mattis.',
     'Morbi vel mauris sapien. Donec dictum cursus est a feugiat. Etiam porttitor purus hendrerit odio lacinia, et fermentum sapien sagittis. Quisque aliquam aliquam molestie. Duis felis risus, ultrices sit amet rhoncus nec, scelerisque vel nunc. Sed vel enim sagittis, aliquam sem maximus, iaculis lectus. Morbi ultricies ac orci imperdiet congue.',
     'Mauris posuere venenatis ex at accumsan. Donec rutrum gravida arcu. Curabitur condimentum nunc eget velit sodales, non efficitur elit rhoncus. Integer est libero, placerat non diam ac, dictum vehicula risus. Phasellus vulputate aliquam tempor. Nunc purus leo, fringilla posuere sodales ac, tincidunt sed quam. Vestibulum tortor magna, viverra sed varius quis, viverra quis nulla. Integer vitae massa nec nisi laoreet porttitor. Ut ut nisi leo. Curabitur ultrices consectetur nunc lacinia convallis. Duis efficitur vulputate metus in tristique. Fusce bibendum placerat leo eget volutpat.',
@@ -11,7 +11,7 @@ const contents = [
 function LoremContent({ paragraphs }: { paragraphs: number }) {
     return (
         <>
-            {contents.slice(0, paragraphs).map((v, i) => <p key={i}>{i}- {v}</p>)}
+            {loremContents.slice(0, paragraphs).map((v, i) => <p key={i}>{i}- {v}</p>)}
         </>
     );
 }

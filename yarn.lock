@@ -3554,6 +3554,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jikji/e2e@workspace:tests/e2e":
+  version: 0.0.0-use.local
+  resolution: "@jikji/e2e@workspace:tests/e2e"
+  dependencies:
+    "@playwright/test": ^1.28.1
+  languageName: unknown
+  linkType: soft
+
 "@jikji/generator@workspace:^, @jikji/generator@workspace:packages/generator":
   version: 0.0.0-use.local
   resolution: "@jikji/generator@workspace:packages/generator"
@@ -3632,7 +3640,6 @@ __metadata:
   dependencies:
     "@microsoft/api-extractor": ^7.34.0
     child-process-promise: ^2.2.1
-    chokidar: ^3.5.3
     tslib: ^2.5.0
     typescript: ^4.9.4
   languageName: unknown
@@ -3897,6 +3904,18 @@ __metadata:
     tiny-glob: ^0.2.9
     tslib: ^2.4.0
   checksum: 118a1971120253740121a1db0a6658c21195b7da962acf9c124b507a3df707cfc97b0b84a16edcbd4352853b182e8337da9fc6e8e3d06c60d75ae4fb42321c75
+  languageName: node
+  linkType: hard
+
+"@playwright/test@npm:^1.28.1":
+  version: 1.30.0
+  resolution: "@playwright/test@npm:1.30.0"
+  dependencies:
+    "@types/node": "*"
+    playwright-core: 1.30.0
+  bin:
+    playwright: cli.js
+  checksum: 777432ac9cf3d0341fcd8dd265cb4c0775619d0ef48252b32a7c4d632d8038449756ec34bec873828cadbc08ba634e81176cb193304d34e699472771b7fb4d1e
   languageName: node
   linkType: hard
 
@@ -14486,6 +14505,15 @@ __metadata:
   dependencies:
     find-up: ^3.0.0
   checksum: 5bac346b7c7c903613c057ae3ab722f320716199d753f4a7d053d38f2b5955460f3e6ab73b4762c62fd3e947f58e04f1343e92089e7bb6091c90877406fcd8c8
+  languageName: node
+  linkType: hard
+
+"playwright-core@npm:1.30.0":
+  version: 1.30.0
+  resolution: "playwright-core@npm:1.30.0"
+  bin:
+    playwright: cli.js
+  checksum: 4c5693f27245a1168f94708ecd8e1eb0d200de435b25cc07cfa25b97a094633818954dc00baf24e0ff551825f672050b83d1309362c1f97213fe8ebd2a147ed9
   languageName: node
   linkType: hard
 

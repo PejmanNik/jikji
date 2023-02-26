@@ -4,7 +4,8 @@
     "workspaces": [
         "packages/*",
         "example",
-        "docs"
+        "docs",
+        "tests/*"
     ],
     "scripts": {
         "sandbox": "yarn workspace @jikji/sandbox start",

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, ReportView, ReportRoot, Route, Section, PageContent, pageSize, SectionHeader } from '@jikji/react';
+import { BrowserRouter, ReportView, ReportRoot, Route, Section, PageContent, pageSize, SectionHeader, useFontLoadSuspension, core } from '@jikji/react';
 import LoremContent from "./components/LoremContent";
 import SimpleTable from "./components/SimpleTable";
 import SequenceContent from "./components/SequenceContent";
@@ -14,8 +14,16 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
-
+function App() {  
+  core.logger.setLevel("debug");
+  core.logger.setFlags([
+    core.LogFlag.SplitElement,
+    core.LogFlag.SplitPage,
+    core.LogFlag.Recoil,
+    core.LogFlag.DerivationTree,
+    core.LogFlag.SectionLayout,
+  ]);
+  
   return (
     <QueryClientProvider client={queryClient}>
       <ReportView>
@@ -30,6 +38,8 @@ function App() {
 }
 
 function TextReport() {
+  useFontLoadSuspension();
+
   return (<>
     <Section dimension={pageSize.A5}>
       <SectionHeader>
@@ -40,10 +50,10 @@ function TextReport() {
         <Unbreakable />      
         <Stateful />
         <FetchTextFromAPI />
-        <SequenceContent />       
+        {/* <SequenceContent />        */}
       </PageContent>
     </Section>
-    <Section dimension={pageSize.A5}>
+    {/* <Section dimension={pageSize.A5}>
       <SectionHeader>
         Section 2
       </SectionHeader>
@@ -52,7 +62,7 @@ function TextReport() {
         <SimpleTable />
         <TwoColumnText />
       </PageContent>
-    </Section>
+    </Section> */}
   </>)
 }
 

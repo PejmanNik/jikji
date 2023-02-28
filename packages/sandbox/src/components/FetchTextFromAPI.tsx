@@ -12,22 +12,21 @@ function FetchTextFromAPI() {
   const { data, isLoading } = useQuery("quote", fetchQuote);
   const { release } = useLayoutSuspension("quote");
 
-  console.log({isLoading})
+  console.log({ isLoading })
   useEffect(() => {
     if (!isLoading) {
-      console.log('re', {isLoading})
-      release();
+      release()
     }
   }, [isLoading, release]);
 
   if (isLoading) {
-    return <>"Loading From API..."</>;
+    return <div>"Loading From API..."</div>;
   }
 
   return (
-    <div style={{ backgroundColor: "#fafafa" }}>
-      <h2>{data.author}</h2>
-      <p>{data.content}</p>
+    <div style={{ backgroundColor: "#eaeaea" }}>
+      <h2>{data?.author ?? "?"}</h2>
+      <p>{data?.content ?? "?"}</p>
     </div>
   );
 }

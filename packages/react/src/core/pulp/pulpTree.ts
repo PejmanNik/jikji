@@ -6,17 +6,40 @@ import { isInstanceOfComponent } from 'core/reactTypeHelper';
 import { fiberToPulpTree } from './fiberToPulpTree';
 import { getChildren } from './treeHelper';
 
-export function makePulpTree(
-  element: HTMLDivElement,
-  plugins: Readonly<ReportPlugin[]>,
-) {
-  // ⚠️ This is dangerous action and can break anytime
-  // accessing internal React Fiber API.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getInstanceFromNode = (ReactDom as any)
-    .__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.Events[0];
+// ⚠️ This is dangerous action and can break anytime
+// accessing internal React Fiber API.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getInstanceFromNode = (ReactDom as any)
+  .__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.Events[0];
 
-  const fiberRoot = getInstanceFromNode?.(element);
+//https://github.com/facebook/react/packages/react-reconciler/src/ReactWorkTags.js
+const HostRoot = 3;
+
+function isContainerMarkedAsRoot(fiber?: Fiber): boolean {
+  return fiber?.tag === HostRoot;
+}
+
+function findRootFiberNode(parentElement?: Element): Fiber | null {
+  const element = parentElement ?? document.body;
+
+  const fiber = getInstanceFromNode(element);
+  if (isContainerMarkedAsRoot(fiber)) {
+    return fiber;
+  }
+
+  for (const child of Array.from(element.children)) {
+    const result = findRootFiberNode(child);
+    if (result !== null) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
+export function makePulpTree(plugins: Readonly<ReportPlugin[]>,
+) {
+  const fiberRoot = findRootFiberNode();
 
   if (!fiberRoot) {
     throw Error(
@@ -36,7 +59,7 @@ export function makePulpTree(
 
 export function findPageContentFiber(fiber: Fiber[]): Fiber | null {
   for (let i = 0; i < fiber.length; i++) {
-    if (isInstanceOfComponent(fiber[i].elementType, PageContent)) {
+    if (fiber[i].elementType && isInstanceOfComponent(fiber[i].elementType, PageContent)) {
       return fiber[i];
     }
 

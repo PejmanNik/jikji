@@ -8,7 +8,7 @@ function getComponentSignature(component: unknown): string {
   if (typeof component === 'string') {
     return component
   }
-  else if (typeof component === 'function') {
+  else if (typeof component === 'function' || typeof component === 'symbol') {
     return component.toString()
   }
   else if (component && typeof component === 'object' &&
@@ -17,7 +17,7 @@ function getComponentSignature(component: unknown): string {
     return getComponentSignature(component.render);
   }
 
-  throw new Error("can't find component signature");
+  return "";
 }
 
 export function isInstanceOfComponent(

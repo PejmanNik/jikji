@@ -1,14 +1,10 @@
-import {memo, useContext, useRef} from 'react';
+import { memo, ReactNode, useRef } from 'react';
 import Page from 'components/Page';
-import splitPageContent from 'core/splitPageContent';
-import {OptionContext} from 'components/ReportRoot/optionContext';
-import log, {LogFlag} from 'core/log';
+import log, { LogFlag } from 'core/log';
 import PageOverflowWarning from 'components/PageOverflowWarning';
 import debugHelper from 'core/debugHelper';
-import {SectionChildren} from './parseSectionChildren';
-import getHeaderFooterBuilder, {
-  buildPageAdjustments,
-} from './getHeaderFooterBuilder';
+import { SectionChildren } from './parseSectionChildren';
+import getHeaderFooterBuilder from './getHeaderFooterBuilder';
 import { useSetSectionInfo } from './useSetSectionInfo';
 
 export interface DivRefObject {
@@ -17,34 +13,17 @@ export interface DivRefObject {
 
 interface SectionLayoutBuilderProps {
   sectionChildren: SectionChildren;
-  pageRef: DivRefObject;
-  sectionHeaderRef: DivRefObject;
-  sectionFooterRef: DivRefObject;
+  pages: ReactNode[]
 }
 
 function SectionLayoutBuilder({
   sectionChildren,
-  pageRef,
-  sectionHeaderRef,
-  sectionFooterRef,
+  pages
 }: SectionLayoutBuilderProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const {plugins} = useContext(OptionContext);
-  const {pageElements} = sectionChildren;
+  const { pageElements } = sectionChildren;
 
-  const pageAdjustments = buildPageAdjustments(
-    sectionHeaderRef,
-    sectionFooterRef,
-  );
-
-  const pages = splitPageContent(
-    pageRef.current,
-    pageRef.current.getBoundingClientRect(),
-    pageAdjustments,
-    plugins,
-  );
-
-  const {buildFooter, buildHeader} = getHeaderFooterBuilder(
+  const { buildFooter, buildHeader } = getHeaderFooterBuilder(
     pages.length,
     sectionChildren,
   );
@@ -52,7 +31,7 @@ function SectionLayoutBuilder({
   useSetSectionInfo(pages.length, true);
 
   // prettier-ignore
-  log.debug("layout builder", {pages, props:{sectionChildren, pageRef, sectionHeaderRef, sectionFooterRef}}, [LogFlag.SectionLayout]);
+  log.debug("layout builder", { pages, props: { sectionChildren } }, [LogFlag.SectionLayout]);
 
   return (
     <div ref={ref}>

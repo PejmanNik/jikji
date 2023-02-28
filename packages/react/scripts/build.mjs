@@ -4,10 +4,9 @@ import {style} from '@hyrious/esbuild-plugin-style';
 
 const args = process.argv;
 
-const entryFile = 'src/index.ts';
 export const shared = {
   bundle: true,
-  entryPoints: [entryFile],
+  entryPoints: ['src/index.ts'],
   external: ['react', 'react-dom', 'recoil', 'react/jsx-runtime'],
   logLevel: 'info',
   minify: true,

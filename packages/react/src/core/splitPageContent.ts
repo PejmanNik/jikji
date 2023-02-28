@@ -21,13 +21,12 @@ export const getAvailableHeight =
     );
   };
 
-function splitPageContent(
-  contentElement: HTMLDivElement,
+function splitPageContent(  
   pageRect: DOMRect,
   pageAdjustments: PageAdjustment,
   plugins: Readonly<ReportPlugin[]>,
 ) {
-  const pulp = makePulpTree(contentElement, plugins);
+  const pulp = makePulpTree(plugins);
 
   if (pulp.type !== PulpType.Component)
     throw Error(

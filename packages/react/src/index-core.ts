@@ -20,5 +20,7 @@ export { HostTextPulp } from './core/pulp/HostTextPulp';
 export { ComponentPulp } from './core/pulp/ComponentPulp';
 export type { ComponentPulpState, ComponentPulpProps } from './core/pulp/ComponentPulp';
 
-export type { logLevel, LogLevel, LogFlag } from './core/log';
+export { logLevel, LogFlag } from './core/log';
+export type { LogLevel } from './core/log';
+export { default as logger } from './core/log';
 export { default as logConfig } from './core/logConfig';

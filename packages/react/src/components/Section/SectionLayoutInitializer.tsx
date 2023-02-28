@@ -1,10 +1,12 @@
-import {ReactNode, useMemo, useRef} from 'react';
+import { ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import Page from 'components/Page';
 import useIsLayoutSuspended from 'components/useIsLayoutSuspended';
-import log, {LogFlag} from 'core/log';
+import log, { LogFlag } from 'core/log';
+import splitPageContent from 'core/splitPageContent';
+import { OptionContext } from 'components/ReportRoot/optionContext';
 import parseSectionChildren from './parseSectionChildren';
-import getHeaderFooterBuilder from './getHeaderFooterBuilder';
-import SectionLayoutBuilder, {DivRefObject} from './SectionLayoutBuilder';
+import getHeaderFooterBuilder, { buildPageAdjustments } from './getHeaderFooterBuilder';
+import SectionLayoutBuilder from './SectionLayoutBuilder';
 import PrerenderPreview from './PrerenderPreview';
 import { useSetSectionInfo } from './useSetSectionInfo';
 
@@ -12,20 +14,23 @@ interface SectionLayoutInitializerProps {
   children: ReactNode;
 }
 
-function SectionLayoutInitializer({children}: SectionLayoutInitializerProps) {
-  window.scrollTo({left: 0, top: 0});
+function SectionLayoutInitializer({ children }: SectionLayoutInitializerProps) {
+  window.scrollTo({ left: 0, top: 0 });
   const isLayoutSuspended = useIsLayoutSuspended();
   useSetSectionInfo(0, false);
+
   const pageRef = useRef<HTMLDivElement>(null);
   const sectionHeaderRef = useRef<HTMLDivElement>(null);
   const sectionFooterRef = useRef<HTMLDivElement>(null);
+  const { plugins } = useContext(OptionContext);
+  const [pages, setPages] = useState<ReactNode[] | undefined>();
 
   const sectionChildren = useMemo(
     () => parseSectionChildren(children),
     [children],
   );
 
-  const {buildFooter, buildHeader} = getHeaderFooterBuilder(
+  const { buildFooter, buildHeader } = getHeaderFooterBuilder(
     1,
     sectionChildren,
     sectionHeaderRef,
@@ -33,9 +38,28 @@ function SectionLayoutInitializer({children}: SectionLayoutInitializerProps) {
   );
 
   // prettier-ignore
-  log.debug("layout initializer", {isLayoutSuspended}, [LogFlag.SectionLayout]);
+  log.debug("layout initializer", { isLayoutSuspended }, [LogFlag.SectionLayout]);
 
-  if (isLayoutSuspended || pageRef.current == null) {
+
+  useEffect(() => {
+    if (!isLayoutSuspended && pageRef.current != null) {
+      const pageAdjustments = buildPageAdjustments(
+        sectionHeaderRef,
+        sectionFooterRef,
+      );
+
+      const pages = splitPageContent(
+        pageRef.current.getBoundingClientRect(),
+        pageAdjustments,
+        plugins,
+      );
+
+      setPages(pages);
+    }
+  }, [isLayoutSuspended, plugins]);
+
+
+  if (!pages) {
     // render initialize page, we need it for calculations
     return (
       <PrerenderPreview>
@@ -54,9 +78,7 @@ function SectionLayoutInitializer({children}: SectionLayoutInitializerProps) {
   return (
     <SectionLayoutBuilder
       sectionChildren={sectionChildren}
-      pageRef={pageRef as DivRefObject}
-      sectionHeaderRef={sectionHeaderRef as DivRefObject}
-      sectionFooterRef={sectionFooterRef as DivRefObject}
+      pages={pages}
     />
   );
 }

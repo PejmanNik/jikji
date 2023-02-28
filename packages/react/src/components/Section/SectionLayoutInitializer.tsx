@@ -49,7 +49,7 @@ function SectionLayoutInitializer({ children }: SectionLayoutInitializerProps) {
       );
 
       const pages = splitPageContent(
-        pageRef.current.getBoundingClientRect(),
+        pageRef.current,
         pageAdjustments,
         plugins,
       );

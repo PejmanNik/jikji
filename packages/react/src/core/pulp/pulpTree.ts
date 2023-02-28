@@ -12,6 +12,7 @@ import { getChildren } from './treeHelper';
 const getInstanceFromNode = (ReactDom as any)
   .__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.Events[0];
 
+
 //https://github.com/facebook/react/packages/react-reconciler/src/ReactWorkTags.js
 const HostRoot = 3;
 
@@ -37,7 +38,7 @@ function findRootFiberNode(parentElement?: Element): Fiber | null {
   return null;
 }
 
-export function makePulpTree(plugins: Readonly<ReportPlugin[]>,
+export function makePulpTree(contentElement: HTMLDivElement, plugins: Readonly<ReportPlugin[]>,
 ) {
   const fiberRoot = findRootFiberNode();
 
@@ -47,7 +48,7 @@ export function makePulpTree(plugins: Readonly<ReportPlugin[]>,
     );
   }
 
-  const pageContentFiber = findPageContentFiber([fiberRoot]);
+  const pageContentFiber = findPageContentFiber(contentElement, [fiberRoot]);
   if (!pageContentFiber) {
     throw Error(
       "can't find the `PageContent` component, make sure you follow the documents.",
@@ -57,10 +58,12 @@ export function makePulpTree(plugins: Readonly<ReportPlugin[]>,
   return fiberToPulpTree(pageContentFiber, '1.', plugins);
 }
 
-export function findPageContentFiber(fiber: Fiber[]): Fiber | null {
+export function findPageContentFiber(contentElement: HTMLDivElement, fiber: Fiber[]): Fiber | null {
   for (let i = 0; i < fiber.length; i++) {
-    if (fiber[i].elementType && isInstanceOfComponent(fiber[i].elementType, PageContent)) {
-      return fiber[i];
+    if (fiber[i].elementType 
+      && isInstanceOfComponent(fiber[i].elementType, PageContent) 
+      && fiber[i].return?.stateNode == contentElement) {    
+        return fiber[i];
     }
 
     // find PageContent in the fiber children
@@ -69,7 +72,7 @@ export function findPageContentFiber(fiber: Fiber[]): Fiber | null {
       continue;
     }
 
-    const nestedResult = findPageContentFiber(children);
+    const nestedResult = findPageContentFiber(contentElement, children);
     if (nestedResult) return nestedResult;
   }
 

@@ -71,7 +71,7 @@ export function splitHostText(
     lastTextNodeY = pulp.linesInfo.at(-1)?.endY ?? lastNodeY;
 
     // prettier-ignore
-    log.debug('uae entire HostTextPulp',{text: pulp.text, pulp: pulp, lastNodeY, lastTextNodeY, pageOffset: splitNodeInfo.pageOffset}, [LogFlag.SplitElement]);
+    log.debug('use entire HostTextPulp',{text: pulp.text, pulp: pulp, lastNodeY, lastTextNodeY, pageOffset: splitNodeInfo.pageOffset}, [LogFlag.SplitElement]);
   } else {
     // try to split the text by lines
     const linePosition = comparePosition(lastTextNodeY, pulp.nodeY, 0);

@@ -1,7 +1,7 @@
-import type {Fiber} from 'react-reconciler';
-import {getTextNodeLinesInfo, LineInfo} from 'core/textNodeParser';
-import {PulpType, SplitPulp} from './pulpTypes';
-import {handleMultiColumnText} from './multiColumnTextHelper';
+import type { Fiber } from 'react-reconciler';
+import { getTextNodeLinesInfo, LineInfo } from 'core/textNodeParser';
+import { PulpType, SplitPulp } from './pulpTypes';
+import { handleMultiColumnText } from './multiColumnTextHelper';
 
 export class HostTextPulp {
   readonly type: PulpType.HostText;
@@ -45,6 +45,7 @@ export class HostTextPulp {
     const domNode = fiber.stateNode;
     const linesInfo = getTextNodeLinesInfo(fiber.stateNode);
     const columnCount = this.getColumnCount(linesInfo);
+
     return new HostTextPulp(text, linesInfo, columnCount, domNode);
   }
 
@@ -68,10 +69,8 @@ export class HostTextPulp {
       selectedLines,
     );
     const component = mcSelectedLines.map(x => x.text).join('');
-
-    // const alternateLinesInfo = this.linesInfo.slice(selectedLines.length);
     const pulp = this.update(alternateLinesInfo);
 
-    return {pulp, component};
+    return { pulp, component };
   }
 }

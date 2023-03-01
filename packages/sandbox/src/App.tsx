@@ -50,19 +50,18 @@ function TextReport() {
         <Unbreakable />      
         <Stateful />
         <FetchTextFromAPI />
-        {/* <SequenceContent />        */}
+        <SequenceContent />       
       </PageContent>
     </Section>
-    {/* <Section dimension={pageSize.A5}>
+    <Section dimension={pageSize.A5}>
       <SectionHeader>
         Section 2
       </SectionHeader>
-      <PageContent>
-        <LoremContent paragraphs={6} />
+      <PageContent>      
         <SimpleTable />
         <TwoColumnText />
       </PageContent>
-    </Section> */}
+    </Section>
   </>)
 }
 

@@ -24,7 +24,7 @@ export function splitHostComponent(
   // is there enough space for this component on the page?
   if (
     nodeEndY <= splitNodeInfo.pageEndY - pageOffset &&
-    !pulp.hasChildrenWithForceVisit
+    !pulp.isForceToVisit
   ) {
     component = pulp.component;
     lastNodeY = nodeEndY;

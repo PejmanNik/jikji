@@ -10,6 +10,7 @@ import {
 import { ExplicitPartial, merge, mergeProps } from './pulpHelpers';
 import { Pulp, PulpType, SplitPulp } from './pulpTypes';
 import { buildVirtualOffset } from './virtualOffset';
+import { hasRenderedWithForceVisit } from './pulpShared';
 
 export interface HostComponentPulpProps {
   [key: string]: unknown;
@@ -68,7 +69,7 @@ export class HostComponentPulp {
   readonly component: ReactElement;
   readonly version: number;
   readonly domBoxInfo: DomBoxInfo;
-  readonly hasChildrenWithForceVisit: boolean;
+  readonly isForceToVisit: boolean;
 
   public constructor(
     id: string,
@@ -88,7 +89,7 @@ export class HostComponentPulp {
     this.domBoxInfo = domBoxInfo;
     this.nodeY = domBoxInfo.y;
     this.version = version;
-    this.hasChildrenWithForceVisit = this.hasPulpWithForceVisit(rendered);
+    this.isForceToVisit = hasRenderedWithForceVisit(rendered);
     this.component = this.createComponent(props, props.children);
   }
 
@@ -167,20 +168,6 @@ export class HostComponentPulp {
       fullHeight: marginsInfo.marginBottomWithCollapse + this.domBoxInfo.height,
       nodeHeight: this.domBoxInfo.height,
     };
-  }
-
-  private hasPulpWithForceVisit(rendered: Pulp[] | null): boolean {
-    if (!rendered) return false;
-
-    for (const pulp of rendered) {
-      if (pulp instanceof HostComponentPulp && pulp.hasChildrenWithForceVisit) {
-        return true;
-      } else if (pulp instanceof ComponentPulp && pulp.state.forceVisit) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   protected update(

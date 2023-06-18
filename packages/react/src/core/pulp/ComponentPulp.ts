@@ -8,6 +8,7 @@ import type { Fiber } from 'react-reconciler';
 import { createAlternateRendered } from './componentShared';
 import { ExplicitPartial, merge, mergeProps } from './pulpHelpers';
 import { Pulp, PulpType, SplitPulp } from './pulpTypes';
+import { hasRenderedWithForceVisit } from './pulpShared';
 
 export interface ComponentPulpProps {
   key: string | null;
@@ -26,6 +27,7 @@ export class ComponentPulp {
   readonly rendered: Pulp[] | null;
   readonly component: ReactElement;
   readonly state: ComponentPulpState;
+  readonly isForceToVisit: boolean;
 
   public constructor(
     elementType: ElementType,
@@ -41,6 +43,7 @@ export class ComponentPulp {
     this.state = state ?? { forceVisit: false, splitSkipped: false };
 
     this.component = component ?? this.createComponent(props, props.children);
+    this.isForceToVisit = this.state.forceVisit || hasRenderedWithForceVisit(rendered);
   }
 
   public clone(newProps: ExplicitPartial<{

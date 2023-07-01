@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0]
+
+### Changed
+
+- Breaking change in the Table component
+
+### Added
+
+- Add sandbox project for testing
+
+### Fixed
+
+- Fix PageBreak component issue in none-host component
 
 ## [0.2.3]
 ### Changed

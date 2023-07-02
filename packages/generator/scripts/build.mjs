@@ -1,4 +1,4 @@
-import { build } from "esbuild";
+import esbuild from "esbuild";
 import { buildTsc } from "@jikji/shared/build-tsc.mjs";
 
 const args = process.argv;
@@ -14,19 +14,32 @@ const shared = {
   platform: "node",
 };
 
-const esm = build({
+const esmCtx = await esbuild.context({
   ...shared,
   format: "esm",
   outfile: "./lib/index.esm.js",
   target: ["es2020", "node18"],
-  watch: args.includes("--watch"),
 });
 
-const cjs = build({
+let esm = esmCtx.rebuild();
+if (args.includes("--watch")) {
+  esm = esm.then(() => esmCtx.watch());
+}
+
+const cjsCtx = await esbuild.context({
   ...shared,
   format: "cjs",
   outfile: "./lib/index.cjs.js",
   target: ["es2020", "node18"],
 });
 
+const cjs = cjsCtx.rebuild();
+
 await Promise.all([buildTsc(import.meta.url), esm, cjs]);
+
+await esmCtx.dispose();
+await cjsCtx.dispose();
+
+console.log(
+  `\x1b[32mCompleted Generator build\x1b[0m`
+);

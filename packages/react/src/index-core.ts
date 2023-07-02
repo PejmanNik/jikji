@@ -21,6 +21,6 @@ export { ComponentPulp } from './core/pulp/ComponentPulp';
 export type { ComponentPulpState, ComponentPulpProps } from './core/pulp/ComponentPulp';
 
 export { logLevel, LogFlag } from './core/log';
-export type { LogLevel } from './core/log';
+export type { LogLevel, Log, LogParam } from './core/log';
 export { default as logger } from './core/log';
 export { default as logConfig } from './core/logConfig';

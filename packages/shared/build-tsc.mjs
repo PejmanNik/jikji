@@ -10,7 +10,7 @@ export const buildTsc = async (url) => {
   await exec("tsc");
   const tsFinishTime = performance.now();
   console.log(
-    `\x1b[32mTS Done in ${Math.round(tsFinishTime - startTime)}ms \x1b[0m`
+    `\x1b[32mCompleted TS build in ${Math.round(tsFinishTime - startTime)}ms \x1b[0m`
   );
 
   const dirname = path.dirname(fileURLToPath(url));
@@ -35,7 +35,7 @@ export const buildTsc = async (url) => {
 
   if (extractorResult.succeeded) {
     console.log(
-      `\x1b[32mAPI Extractor Done in ${Math.round(
+      `\x1b[32mCompleted API Extractor in ${Math.round(
         apiFinishTime - tsFinishTime
       )}ms \x1b[0m`
     );
@@ -46,5 +46,6 @@ export const buildTsc = async (url) => {
         ` and ${extractorResult.warningCount} warnings`
     );
     process.exitCode = 1;
+    throw new Error("API Extractor completed with errors");
   }
 };

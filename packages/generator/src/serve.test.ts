@@ -2,7 +2,13 @@ import { startServer } from "./serve";
 import http, { Server } from "http";
 
 jest.mock("http");
-jest.mock("serve-handler");
+jest.mock("http");
+jest.mock("fs/promises", () => ({
+  readdir: jest.fn().mockResolvedValue([{
+    isDirectory: () => true,
+    name: "static",
+  }]),
+}));
 
 const mockedHttp = jest.mocked(http, { shallow: true });
 const mockedListen = jest.fn();
@@ -20,6 +26,6 @@ test("start server with custom port", async () => {
   const port = 3000;
   const result = await startServer(dir, port);
 
-  expect(result.getHost()).toBe("http://localhost:3000");  
+  expect(result.getHost()).toBe("http://localhost:3000");
   expect(mockedListen).toHaveBeenCalledWith(port);
 });

@@ -20,10 +20,10 @@ const flagColor = [
 ];
 
 //TODO: convert unknown to primitive types for better logs in SSG
-interface LogParam {
+export interface LogParam {
   [key: string | number]: unknown;
 }
-class Log {
+export class Log {
   private level: LogLevel = 'none';
   private flags: LogFlag[] = [];
 

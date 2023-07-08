@@ -1,6 +1,7 @@
 enum DebugMode {
   None = 0,
   ActivateDebuggers,
+  KeepPrerender,
   ShowPrerender,
   PauseEngine,
 }
@@ -25,6 +26,9 @@ export default {
   get activateDebuggers() {
     return readDebugMode() >= DebugMode.ActivateDebuggers;
   },
+  get keepPrerender() {
+    return readDebugMode() >= DebugMode.KeepPrerender;
+  },  
   get showPrerender() {
     return readDebugMode() >= DebugMode.ShowPrerender;
   },

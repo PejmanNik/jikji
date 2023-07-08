@@ -1,20 +1,23 @@
-import {ReactNode} from 'react';
+import {CSSProperties, ReactNode} from 'react';
 import debugHelper from 'core/debugHelper';
 
-function PrerenderPreview({children}: {children: ReactNode}) {
-  if (!debugHelper.showPrerender) {
-    return (
-      <div
-        style={{
-          visibility: 'hidden',
-          overflow: 'hidden',
-        }}>
-        {children}
-      </div>
-    );
+export interface PrerenderPreviewProps {
+  children: ReactNode;
+  isSplitted: boolean;
+}
+
+function PrerenderPreview({children, isSplitted}: PrerenderPreviewProps) {
+  const style: CSSProperties = {
+    visibility: debugHelper.showPrerender ? 'visible' : 'hidden',
+    display: isSplitted && debugHelper.keepPrerender ? 'none' : 'block',
+    overflow: 'hidden',
+  };
+
+  if (!isSplitted || debugHelper.keepPrerender) {
+    return <div style={style}>{children}</div>;
   }
 
-  return <>{children}</>;
+  return null;
 }
 
 export default PrerenderPreview;

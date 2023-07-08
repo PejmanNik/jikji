@@ -25,7 +25,7 @@ export class TableHostComponentPulp extends HostComponentPulp {
         super(id, elementType, props, domNode, domBoxInfo, rendered, version);
         this.header = header;
         this.footer = footer;
-        this.component = this.createComponent(props, props.children);
+        this.component = this.createComponent(props, rendered?.[0]?.component ?? props.children);
     }
 
     static FromPulp(pulp: HostComponentPulp, tableChildren: TableChildren) {
@@ -80,7 +80,7 @@ export class TableHostComponentPulp extends HostComponentPulp {
             this.domNode,
             newProps.domBoxInfo ?? this.domBoxInfo,
             merge(this.rendered, newProps.rendered),
-            newProps.version ?? this.version,            
+            newProps.version ?? this.version,
             this.header,
             this.footer
         );

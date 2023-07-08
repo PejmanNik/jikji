@@ -1,4 +1,4 @@
-import type {Fiber} from 'react-reconciler';
+import type { Fiber } from 'react-reconciler';
 
 export function getSiblings(fiberRoot: Fiber | null) {
   const result: Fiber[] = [];
@@ -12,12 +12,9 @@ export function getSiblings(fiberRoot: Fiber | null) {
   return result;
 }
 
-export function getChildren(fiber: Fiber) {
-  if (!fiber.child) return null;
-
+export function getChildren(fiber: Fiber): Fiber[] {  
   const siblings = getSiblings(fiber.child);
-  if (siblings.length === 0) {
-    return [fiber.child];
-  }
+  if (!fiber.child) return siblings;
+  
   return [fiber.child, ...siblings];
 }

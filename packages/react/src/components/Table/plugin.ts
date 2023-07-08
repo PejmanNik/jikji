@@ -26,9 +26,9 @@ export const tablePlugin: ReportPlugin = {
         // to overate the split and layout behavior for HTML table component
         return pulp.clone({
             rendered: [TableHostComponentPulp.FromPulp(tablePulp, {
-                ...children,
                 header: freezeColumnWidth(children.header),
                 body: children.body,
+                footer: children.footer,
             })],
             component: null,
         });

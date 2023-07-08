@@ -48,7 +48,9 @@ export function makePulpTree(contentElement: HTMLDivElement, plugins: Readonly<R
     );
   }
 
-  const pageContentFiber = findPageContentFiber(contentElement, [fiberRoot]);
+  const pageContentFiber = findPageContentFiber(contentElement, [fiberRoot])
+    ?? findPageContentFiber(contentElement, fiberRoot.alternate ? [fiberRoot.alternate] : []);
+
   if (!pageContentFiber) {
     throw Error(
       "can't find the `PageContent` component, make sure you follow the documents.",
@@ -59,16 +61,16 @@ export function makePulpTree(contentElement: HTMLDivElement, plugins: Readonly<R
 }
 
 export function findPageContentFiber(contentElement: HTMLDivElement, fiber: Fiber[]): Fiber | null {
-  for (let i = 0; i < fiber.length; i++) {    
-    if (fiber[i].elementType 
-      && isInstanceOfComponent(fiber[i].elementType, PageContent) 
-      && fiber[i].return?.stateNode == contentElement) {    
-        return fiber[i];
+  for (let i = 0; i < fiber.length; i++) {
+    if (fiber[i].elementType
+      && isInstanceOfComponent(fiber[i].elementType, PageContent)
+      && fiber[i].return?.stateNode == contentElement) {
+      return fiber[i];
     }
 
     // find PageContent in the fiber children
     const children = getChildren(fiber[i]);
-    if (!children) {
+    if (children.length === 0) {
       continue;
     }
 

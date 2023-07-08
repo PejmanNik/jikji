@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1]
+### Fixed
+
+- Fix Next.Js issue with library
+
 ## [0.3.0]
 
 ### Changed

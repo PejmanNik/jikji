@@ -1,6 +1,6 @@
 {
   "name": "@jikji/react",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "files": [
@@ -48,8 +48,10 @@
     "prettier": "^2.8.3",
     "react-is": "^18.2.0",
     "react-scripts": "5.0.1",
-    "recoil": "^0.7.6",
     "tslib": "^2.5.0",
     "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "recoil": "^0.7.6"
   }
 }

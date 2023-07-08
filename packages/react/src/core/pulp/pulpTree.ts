@@ -21,7 +21,7 @@ function isContainerMarkedAsRoot(fiber?: Fiber): boolean {
 }
 
 function findRootFiberNode(parentElement?: Element): Fiber | null {
-  const element = parentElement ?? document.body;
+  const element = parentElement ?? document;
 
   const fiber = getInstanceFromNode(element);
   if (isContainerMarkedAsRoot(fiber)) {
@@ -59,7 +59,7 @@ export function makePulpTree(contentElement: HTMLDivElement, plugins: Readonly<R
 }
 
 export function findPageContentFiber(contentElement: HTMLDivElement, fiber: Fiber[]): Fiber | null {
-  for (let i = 0; i < fiber.length; i++) {
+  for (let i = 0; i < fiber.length; i++) {    
     if (fiber[i].elementType 
       && isInstanceOfComponent(fiber[i].elementType, PageContent) 
       && fiber[i].return?.stateNode == contentElement) {    

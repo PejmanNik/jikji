@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+### Changed
+- Remove `disableSnapshot` property from `Layout` component
+- Change the engine to use the original component instead of the snapshot when possible
+
 ## [0.3.2]
 
 ### Fixed

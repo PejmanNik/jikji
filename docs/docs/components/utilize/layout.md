@@ -14,20 +14,8 @@ This component can be used as a wrapper for any other components and provide a w
 
 | Name            | Type    | Is Required | Description                                            |
 | :-------------- | :------ | :---------: | :----------------------------------------------------- |
-| disableSnapshot | boolean |     ❌      | Default: `false`,[Disable Snapshot](#disable-snapshot) |
 | disableWrap     | boolean |     ❌      | Default: `false`, [Disable Wrap](#disable-wrap)        |
 
-## Disable Snapshot
-
-By default, the layout engine creates a Snapshot of your component during the process and will use it in pagination. This behavior causes the component to lose any logic or state. For a report, this behavior must not be problematic but if you need to keep the component logic and state, set `disableSnapshot={true}`, then the layout engine will **try** to use the original component instead of creating a snapshot of it.
-
-The term `Snapshot` does not mean an image. It is simply a dummy version of the react component that returns the same output and style as the original one but doesn't have the same type and, as a result, loses the state.
-
-:::info
-The system does not guarantee to use the original component even with `disableSnapshot={true}`. In some cases, like when the component is on the edge of pagination and needs to be broken into two parts to fit the rest of the space on the page, there is no way to use the original component.
-
-To avoid this situation, you can also disable the wrap behavior; the engine starts a new page when finding this component at the edge of a page. Please read the [Disable Wrap](#disable-wrap) documentation to know the risk and limitations.
-:::
 
 ## Disable Wrap
 

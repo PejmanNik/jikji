@@ -8,6 +8,12 @@ This hook provides helpful information about the current page and section inform
 
 The `usePageInfo` hook can be use in any level of JSX hierarchy as long as it is indirect/direct child of one of the **Page...** components like [PageHeader](./page-header) or [PageContent](./page-content.md).
 
+:::caution
+using the `usePageInfo` hook in the children components of [PageContent](./page-content.md) can cause unexpected behavior due to [ComponentSnapshot](../../component-snapshot.md). It is suggested to use this hook in a separate component with a minimal render element that is not subject to breaking/splitting between pages.
+
+if you need to render the page number in the [PageContent](./page-content.md) consider setting a static width for the component as a reserved space and avoid changing the page width of the page.
+:::
+
 ```js
 const {
   pageNumber,

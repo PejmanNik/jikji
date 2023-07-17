@@ -1,5 +1,5 @@
-import {ReportPlugin} from 'core/engine/plugin';
-import {ComponentPulp} from 'core/pulp/ComponentPulp';
+import { ReportPlugin } from 'core/engine/plugin';
+import { ComponentPulp } from 'core/pulp/ComponentPulp';
 import PageBreak from './index';
 
 export const pageBreakPlugin: ReportPlugin = {
@@ -9,7 +9,7 @@ export const pageBreakPlugin: ReportPlugin = {
       return pulp;
     }
 
-    return pulp.setState({forceVisit: true});
+    return pulp.setState({ isForceToVisit: true });
   },
   split: splitNodeInfo => {
     return {

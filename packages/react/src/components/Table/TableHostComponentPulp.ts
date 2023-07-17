@@ -1,6 +1,6 @@
 import { createElement, ReactElement, ReactNode } from 'react';
 import { DomBoxInfo, HostComponentPulpProps, HostComponentPulp } from "core/pulp/HostComponentPulp";
-import { Pulp } from 'core/pulp/pulpTypes';
+import { Pulp, PulpState } from 'core/pulp/pulpTypes';
 import { ExplicitPartial, merge, mergeProps } from 'core/pulp/pulpHelpers';
 import { TableChildren } from './getTableChildren';
 
@@ -18,11 +18,11 @@ export class TableHostComponentPulp extends HostComponentPulp {
         domNode: Element,
         domBoxInfo: DomBoxInfo,
         rendered: Pulp[] | null,
-        version: number,
+        state: PulpState | null,
         header?: HostComponentPulp,
         footer?: HostComponentPulp
     ) {
-        super(id, elementType, props, domNode, domBoxInfo, rendered, version);
+        super(id, elementType, props, domNode, domBoxInfo, rendered, state);
         this.header = header;
         this.footer = footer;
         this.component = this.createComponent(props, rendered?.[0]?.component ?? props.children);
@@ -47,7 +47,7 @@ export class TableHostComponentPulp extends HostComponentPulp {
             pulp.domNode,
             domBoxInfo,
             [tableChildren.body],
-            pulp.version,
+            pulp.state,
             tableChildren.header,
             tableChildren.footer);
     }
@@ -71,7 +71,7 @@ export class TableHostComponentPulp extends HostComponentPulp {
         props: HostComponentPulpProps,
         domBoxInfo: DomBoxInfo,
         rendered: Pulp[] | null,
-        version: number,
+        state: PulpState | null
     }>) {
         return new TableHostComponentPulp(
             this.id,
@@ -80,7 +80,7 @@ export class TableHostComponentPulp extends HostComponentPulp {
             this.domNode,
             newProps.domBoxInfo ?? this.domBoxInfo,
             merge(this.rendered, newProps.rendered),
-            newProps.version ?? this.version,
+            merge(this.state, newProps.state),
             this.header,
             this.footer
         );

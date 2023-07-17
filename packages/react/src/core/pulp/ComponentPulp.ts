@@ -7,7 +7,7 @@ import React, {
 import type { Fiber } from 'react-reconciler';
 import { createAlternateRendered } from './componentShared';
 import { ExplicitPartial, merge, mergeProps } from './pulpHelpers';
-import { Pulp, PulpType, SplitPulp } from './pulpTypes';
+import { Pulp, PulpState, PulpType, SplitPulp } from './pulpTypes';
 import { hasRenderedWithForceVisit } from './pulpShared';
 
 export interface ComponentPulpProps {
@@ -15,9 +15,8 @@ export interface ComponentPulpProps {
   children: ReactNode;
 }
 
-export interface ComponentPulpState {
+export interface ComponentPulpState extends PulpState {
   readonly splitSkipped: boolean;
-  readonly forceVisit: boolean;
 }
 
 export class ComponentPulp {
@@ -27,7 +26,6 @@ export class ComponentPulp {
   readonly rendered: Pulp[] | null;
   readonly component: ReactElement;
   readonly state: ComponentPulpState;
-  readonly isForceToVisit: boolean;
 
   public constructor(
     elementType: ElementType,
@@ -40,10 +38,9 @@ export class ComponentPulp {
     this.elementType = elementType;
     this.props = props;
     this.rendered = rendered;
-    this.state = state ?? { forceVisit: false, splitSkipped: false };
+    this.state = { splitSkipped: false, isSplitted: false, ...state, isForceToVisit: state?.isForceToVisit || hasRenderedWithForceVisit(rendered) };
 
-    this.component = component ?? this.createComponent(props, props.children);
-    this.isForceToVisit = this.state.forceVisit || hasRenderedWithForceVisit(rendered);
+    this.component = component ?? this.createComponent(props, elementType, props.children);
   }
 
   public clone(newProps: ExplicitPartial<{
@@ -51,9 +48,8 @@ export class ComponentPulp {
     props: ComponentPulpProps,
     rendered: Pulp[] | null,
     component: ReactElement,
-    state: ComponentPulpState
-  }>
-  ) {
+    state: ComponentPulpState | null
+  }>) {
     return new ComponentPulp(
       newProps.elementType ?? this.elementType,
       mergeProps(newProps.rendered, this.props, newProps.props),
@@ -81,10 +77,11 @@ export class ComponentPulp {
 
   protected createComponent(
     props: ComponentPulpProps,
+    elementType: ElementType,
     children?: ReactNode,
   ): ReactElement {
     const key = props.key;
-    return createElement(React.Fragment, { key }, children);
+    return createElement(elementType, { key }, children);
   }
 
   protected update(rendered: Array<Pulp>): ComponentPulp | null {
@@ -94,7 +91,7 @@ export class ComponentPulp {
 
     //convert user custom component to a Fragment in order to
     //manipulate inside this component
-    return this.clone({ elementType: React.Fragment, rendered, component: null });
+    return this.clone({ elementType: React.Fragment, rendered, component: null, state: { ...this.state, isSplitted: true } });
   }
 
   canBeSplitted() {
@@ -102,24 +99,30 @@ export class ComponentPulp {
   }
 
   setState(value: Partial<ComponentPulpState>) {
-    return this.clone({ state: { ...this.state, ...value } }
-    );
+    return this.clone({ state: { ...this.state, ...value } });
   }
 
   split(
     splittedRendered: Array<Pulp | null>,
     resultComponents: (ReactElement | string | number)[],
   ): SplitPulp<ReactElement | string | number> {
-    const component = this.createComponent(
-      this.props,
-      resultComponents,
-    );
+
 
     const alternateRendered = createAlternateRendered(
       splittedRendered,
       this.rendered,
     );
+
+    // the component is not changed at all and we can use use entire component
+    if (alternateRendered.length == 0 && !this.state.isSplitted)
+      return { pulp: null, component: this.component }
+
     const pulp = this.update(alternateRendered);
+    const component = this.createComponent(
+      this.props,
+      React.Fragment,
+      resultComponents,
+    );
 
     return { pulp, component };
   }

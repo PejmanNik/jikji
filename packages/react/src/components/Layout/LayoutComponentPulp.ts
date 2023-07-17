@@ -1,4 +1,4 @@
-import { createElement, ElementType, ReactElement, ReactNode } from 'react';
+import { ElementType, ReactElement } from 'react';
 import {
   ComponentPulp,
   ComponentPulpProps,
@@ -8,13 +8,11 @@ import { ExplicitPartial, merge, mergeProps } from 'core/pulp/pulpHelpers';
 import { Pulp } from 'core/pulp/pulpTypes';
 
 export interface LayoutOptions {
-  disableSnapshot: boolean;
   disableWrap: boolean;
 }
 
 export class LayoutComponentPulp extends ComponentPulp {
   readonly layoutOptions: LayoutOptions;
-  readonly component: ReactElement;
 
   public constructor(
     elementType: ElementType,
@@ -26,7 +24,6 @@ export class LayoutComponentPulp extends ComponentPulp {
   ) {
     super(elementType, props, rendered, component, state);
     this.layoutOptions = options;
-    this.component = this.createComponent(props, props.children);
   }
 
   public clone(newProps: ExplicitPartial<{
@@ -34,9 +31,8 @@ export class LayoutComponentPulp extends ComponentPulp {
     props: ComponentPulpProps,
     rendered: Pulp[] | null,
     component: ReactElement,
-    state: ComponentPulpState
-  }>
-  ) {
+    state: ComponentPulpState | null
+  }>) {
     return new LayoutComponentPulp(
       newProps.elementType ?? this.elementType,
       mergeProps(newProps.rendered, this.props, newProps.props),
@@ -47,55 +43,20 @@ export class LayoutComponentPulp extends ComponentPulp {
   }
 
   static FromPulp(pulp: ComponentPulp, options: LayoutOptions) {
-    const rendered = LayoutComponentPulp.createRenderedByOptions(
-      pulp.rendered,
-      options,
-    );
 
     const props = {
       ...pulp.props,
-      children: rendered?.map(x => x.component),
+      children: pulp.rendered?.map(x => x.component),
     };
 
     return new LayoutComponentPulp(
       pulp.elementType,
       props,
-      rendered,
+      pulp.rendered,
       null,
       pulp.state,
       options,
     );
-  }
-
-  protected createComponent(
-    props: ComponentPulpProps,
-    children?: ReactNode,
-  ): ReactElement {
-
-    // why layoutOptions?. : it can be null when this method 
-    // has been called from super class
-    if (this.layoutOptions?.disableSnapshot) {
-      const key = props.key;
-      return createElement(this.elementType, { key }, children);
-    }
-
-    return super.createComponent(props, children);
-  }
-
-  static createRenderedByOptions(
-    rendered: Pulp[] | null,
-    options: LayoutOptions,
-  ): Pulp[] | null {
-    if (options.disableSnapshot && rendered) {
-      return rendered.map(p => {
-        if (p instanceof ComponentPulp) {
-          return LayoutComponentPulp.FromPulp(p, options);
-        }
-        return p;
-      });
-    }
-
-    return rendered;
   }
 
   canBeSplitted() {

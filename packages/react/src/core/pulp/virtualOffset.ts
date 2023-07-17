@@ -76,12 +76,12 @@ export function buildVirtualOffset(
   margins: MarginInfo,
 ): Offset {
   let split = pulp.domBoxInfo.marginBottom;
-  if (pulp.version > 1) {
+  if (pulp.state.isSplitted) {
     split += pulp.domBoxInfo.marginTop;
   }
 
   let element = 0;
-  if (pulp.version > 1) {
+  if (pulp.state.isSplitted) {
     element += margins.marginBottomWithCollapse;
   }
 

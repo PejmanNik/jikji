@@ -8,7 +8,7 @@ import {
   getMarginTopWithSiblingCollapse,
 } from './marginHelper';
 import { ExplicitPartial, merge, mergeProps } from './pulpHelpers';
-import { Pulp, PulpType, SplitPulp } from './pulpTypes';
+import { Pulp, PulpState, PulpType, SplitPulp } from './pulpTypes';
 import { buildVirtualOffset } from './virtualOffset';
 import { hasRenderedWithForceVisit } from './pulpShared';
 
@@ -67,9 +67,8 @@ export class HostComponentPulp {
   readonly rendered: Pulp[] | null;
   readonly nodeY: number;
   readonly component: ReactElement;
-  readonly version: number;
   readonly domBoxInfo: DomBoxInfo;
-  readonly isForceToVisit: boolean;
+  readonly state: PulpState;
 
   public constructor(
     id: string,
@@ -78,7 +77,7 @@ export class HostComponentPulp {
     domNode: Element,
     domBoxInfo: DomBoxInfo,
     rendered: Pulp[] | null,
-    version: number
+    state: PulpState | null,
   ) {
     this.id = id;
     this.type = PulpType.HostComponent;
@@ -88,8 +87,8 @@ export class HostComponentPulp {
     this.rendered = rendered;
     this.domBoxInfo = domBoxInfo;
     this.nodeY = domBoxInfo.y;
-    this.version = version;
-    this.isForceToVisit = hasRenderedWithForceVisit(rendered);
+    this.state = state ?? { isForceToVisit: hasRenderedWithForceVisit(rendered), isSplitted: false };
+
     this.component = this.createComponent(props, props.children);
   }
 
@@ -126,7 +125,7 @@ export class HostComponentPulp {
       domNode,
       domBoxInfo,
       rendered,
-      1,
+      null,
     );
   }
 
@@ -134,7 +133,7 @@ export class HostComponentPulp {
     props: HostComponentPulpProps,
     domBoxInfo: DomBoxInfo,
     rendered: Pulp[] | null,
-    version: number,
+    state: PulpState | null
   }>) {
     return new HostComponentPulp(
       this.id,
@@ -143,7 +142,7 @@ export class HostComponentPulp {
       this.domNode,
       newProps.domBoxInfo ?? this.domBoxInfo,
       merge(this.rendered, newProps.rendered),
-      newProps.version ?? this.version,
+      merge(this.state, newProps.state)
     );
   }
 
@@ -183,7 +182,7 @@ export class HostComponentPulp {
     domBoxInfo.y = nodeY;
     domBoxInfo.height -= newHeight;
 
-    return this.clone({ domBoxInfo, rendered, version: this.version + 1 });
+    return this.clone({ domBoxInfo, rendered, state: { ...this.state ,isSplitted: true } });
   }
 
   split(
@@ -212,7 +211,7 @@ export class HostComponentPulp {
       this.domNode,
       domBoxInfo,
       this.rendered,
-      this.version,
+      this.state,
     );
   }
 }

@@ -1,7 +1,7 @@
-import {ReportPlugin} from 'core/engine/plugin';
-import {ComponentPulp} from 'core/pulp/ComponentPulp';
-import {LayoutComponentPulp} from './LayoutComponentPulp';
-import Layout, {LayoutProps} from './index';
+import { ReportPlugin } from 'core/engine/plugin';
+import { ComponentPulp } from 'core/pulp/ComponentPulp';
+import { LayoutComponentPulp } from './LayoutComponentPulp';
+import Layout, { LayoutProps } from './index';
 
 export const layoutPlugin: ReportPlugin = {
   component: Layout,
@@ -12,7 +12,6 @@ export const layoutPlugin: ReportPlugin = {
     const props = pulp.props as LayoutProps;
 
     return LayoutComponentPulp.FromPulp(pulp, {
-      disableSnapshot: props.disableSnapshot ?? false,
       disableWrap: props.disableWrap ?? false,
     });
   },

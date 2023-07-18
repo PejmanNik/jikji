@@ -64,13 +64,9 @@ export class ComponentPulp {
     rendered: Pulp[] | null,
   ): ComponentPulp {
     const elementType = fiber.elementType ?? React.Fragment;
-    let props = { ...fiber.memoizedProps, key };
-
-    if (elementType == React.Fragment) {
-      props = { key: fiber.key, children: fiber.memoizedProps };
-    } else if (rendered) {
-      props.children = rendered.map(x => x.component);
-    }
+    const props = elementType == React.Fragment
+      ? { key: fiber.key, children: fiber.memoizedProps }
+      : { ...fiber.memoizedProps, key };
 
     return new ComponentPulp(elementType, props, rendered);
   }
@@ -80,8 +76,12 @@ export class ComponentPulp {
     elementType: ElementType,
     children?: ReactNode,
   ): ReactElement {
-    const key = props.key;
-    return createElement(elementType, { key }, children);
+
+    const validProps = elementType == React.Fragment
+      ? { key: props.key, children: props.children }
+      : props;
+
+    return createElement(elementType, validProps, children);
   }
 
   protected update(rendered: Array<Pulp>): ComponentPulp | null {

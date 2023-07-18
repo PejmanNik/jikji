@@ -1,5 +1,6 @@
 import { ReportPlugin } from 'core/engine/plugin';
 import { ComponentPulp } from 'core/pulp/ComponentPulp';
+import React from 'react';
 import PageBreak from './index';
 
 export const pageBreakPlugin: ReportPlugin = {
@@ -17,7 +18,7 @@ export const pageBreakPlugin: ReportPlugin = {
       pageOffset: splitNodeInfo.pageOffset,
       lastNodeY: splitNodeInfo.lastNodeY,
       lastTextNodeY: splitNodeInfo.lastTextNodeY,
-      component: null,
+      component: <React.Fragment />,
       pulp: null,
     };
   },

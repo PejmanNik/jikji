@@ -3,7 +3,7 @@ import { isHostComponentElementType } from "core/pulp/pulpHelpers";
 import { ComponentPulp } from 'core/pulp/ComponentPulp';
 import { TableHostComponentPulp } from './TableHostComponentPulp';
 import { getTableChildren } from './getTableChildren';
-import { freezeColumnWidth } from "./freezeColumnWidth";
+import { freezeColumnWidth, makeRowsUnbreakable } from "./utils";
 import Table from "./index";
 
 export const tablePlugin: ReportPlugin = {
@@ -27,7 +27,7 @@ export const tablePlugin: ReportPlugin = {
         return pulp.clone({
             rendered: [TableHostComponentPulp.FromPulp(tablePulp, {
                 header: freezeColumnWidth(children.header),
-                body: children.body,
+                body: makeRowsUnbreakable(children.body),
                 footer: children.footer,
             })],
             component: null,

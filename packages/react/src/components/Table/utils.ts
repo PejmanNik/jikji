@@ -1,5 +1,8 @@
 import { isHostComponentElementType } from "core/pulp/pulpHelpers";
 import { HostComponentPulp } from "core/pulp/HostComponentPulp";
+import { LayoutComponentPulp } from "components/Layout/LayoutComponentPulp";
+import React from "react";
+import { ComponentPulp } from "index-core";
 
 export function freezeColumnWidth(header: HostComponentPulp | undefined): HostComponentPulp | undefined {
     if (!header?.rendered?.length)
@@ -36,4 +39,20 @@ export function freezeColumnWidth(header: HostComponentPulp | undefined): HostCo
     }
 
     return header.clone({ rendered: headerChildren });
+}
+
+export function makeRowsUnbreakable(body: HostComponentPulp): HostComponentPulp {
+    if (!body?.rendered?.length)
+        return body;
+
+    const bodyChildren: ComponentPulp[] = [];
+    for (const row of body.rendered) {
+        if (!isHostComponentElementType('tr')(row) || !row?.rendered?.length) {
+            continue;
+        }
+
+        bodyChildren.push(new LayoutComponentPulp(React.Fragment, { key: row.props.key, children: row.component }, [row], null, null, { disableWrap: true }));
+    }
+
+    return body.clone({ rendered: bodyChildren });
 }

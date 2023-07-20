@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0]
 
 ### Changed
 - Remove `disableSnapshot` property from `Layout` component
 - Change the engine to use the original component instead of the snapshot when possible
+- Error in loading image will not break the entire report
+
+### Fixed
+- Fix the break issue in the middle of the `td` (table row) element
 
 ## [0.3.2]
 

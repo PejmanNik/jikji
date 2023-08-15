@@ -21,9 +21,9 @@ function Page(
 
   const pageStyle: CSSProperties = {
     display: 'flex',
-    width: dimension.width,
-    height: dimension.height,
-    maxHeight: dimension.height,
+    width: `calc(${dimension.width} - 2px )`,
+    height: `calc(${dimension.height} - 2px )`,
+    maxHeight: `calc(${dimension.height} - 2px )`,
     position: 'relative',
     flexDirection: 'column',
     padding: shorthand(margin),

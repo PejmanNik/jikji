@@ -39,9 +39,9 @@ function Section({
     // #${sectionName} {
     //   page: ${sectionName}
     // }
-    style.appendChild(document.createTextNode(`   
+    style.appendChild(document.createTextNode(`
     @page { 
-      margin: 0px; 
+      margin: none; 
       size:${sectionInfo.dimension.width} ${sectionInfo.dimension.height}; 
       width:${sectionInfo.dimension.width};
       height:${sectionInfo.dimension.height};

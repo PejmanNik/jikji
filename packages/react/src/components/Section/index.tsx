@@ -1,9 +1,9 @@
-import { ReactNode, useEffect, useMemo } from 'react';
-import type { PageDimension, PageMargin, PageOrientation } from 'core/pageType';
-import { pageMargin } from 'core/pageConst';
+import {ReactNode, useEffect, useMemo} from 'react';
+import type {PageDimension, PageMargin, PageOrientation} from 'core/pageType';
+import {pageMargin} from 'core/pageConst';
 import adjustDimension from 'core/adjustDimension';
 import useIdGenerator from 'components/useIdGenerator';
-import { SectionContext } from './context';
+import {SectionContext} from './context';
 import SectionLayoutInitializer from './SectionLayoutInitializer';
 
 export interface SectionProps {
@@ -39,17 +39,21 @@ function Section({
     // #${sectionName} {
     //   page: ${sectionName}
     // }
-    style.appendChild(document.createTextNode(`
+    style.appendChild(
+      document.createTextNode(`
     @page { 
       margin: none; 
       size:${sectionInfo.dimension.width} ${sectionInfo.dimension.height}; 
       width:${sectionInfo.dimension.width};
       height:${sectionInfo.dimension.height};
     }
-    `));
+    `),
+    );
 
     document.head.appendChild(style);
-    return () => { document.head.removeChild(style) };
+    return () => {
+      document.head.removeChild(style);
+    };
   }, [sectionInfo, sectionName]);
 
   //in order to restart the init page builder and suspension handler

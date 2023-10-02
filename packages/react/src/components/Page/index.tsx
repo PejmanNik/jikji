@@ -21,12 +21,15 @@ function Page(
 
   const pageStyle: CSSProperties = {
     display: 'flex',
-    width: `calc(${dimension.width} - 2px )`,
-    height: `calc(${dimension.height} - 2px )`,
-    maxHeight: `calc(${dimension.height} - 2px )`,
+    width: `${dimension.width}`,
+    height: `${dimension.height}`,
+    maxHeight: `${dimension.height}`,
     position: 'relative',
     flexDirection: 'column',
     padding: shorthand(margin),
+    pageBreakBefore: 'always',
+    pageBreakInside: 'avoid',
+    overflow: 'hidden',
     zIndex: 1,
   };
 

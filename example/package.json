@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "start-ssg": "yarn build && yarn dlx -p ts-node ts-node --esm ssg/index.ts",
+    "start-ssg": "yarn build && yarn dlx -p tsx tsx ssg/index.ts",
     "build": "vite build"
   },
   "dependencies": {

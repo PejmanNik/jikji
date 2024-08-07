@@ -10,4 +10,4 @@ Jikji provides all the necessary components to creates reach reports; you can bu
 
 Unlike the [puppeteer-report](https://github.com/PejmanNik/puppeteer-report), this library uses its layout engine instead of the browser layout engine for pagination, so it is 100% customizable. It supports both Client-side rendering and server-side generation.
 
-Check the [live example](https://codesandbox.io/s/jikji-example-14useg) and the [docs](https://jikji.xyz) for more information.
+Check the [live example](https://codesandbox.io/s/jikji-example-14useg) and the [docs](https://jikji.pejmannik.dev) for more information.

@@ -1,5 +1,15 @@
 # jikji
 
+### ⚠️ THIS PROJECT IS DEPRECATED
+
+Please migrate to the [Paprize](https://paprize.page).
+
+The migration should be straightforward when using the Paprize React library, as the API is compatible and only requires a few renamings and minor adjustments.
+
+Paprize offers more features and goes beyond Jikji’s limitations. All previously reported issues have been resolved in Paprize.
+
+-------
+
 Effortless report generator with React and NodeJS
 
 You can build your report like how you build your web pages with React, and Jikji will handle the layout and convert it to an astonishing report for you.
